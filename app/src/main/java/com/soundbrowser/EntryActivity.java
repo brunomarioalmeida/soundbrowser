@@ -10,6 +10,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.soundbrowser.model.SoundSource;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -32,21 +39,29 @@ public class EntryActivity extends Activity {
         am = (AudioManager)this.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         mediaPlayer = new MediaPlayer();
 
-        /*
         audiopathList = new ArrayList<String>(){{
             add("http://users.skynet.be/fa046054/home/P22/track06.mp3");
             add("http://www.noiseaddicts.com/samples/2558.mp3");
             add("http://www.noiseaddicts.com/samples/2537.mp3");
             add("http://www.noiseaddicts.com/samples/2540.mp3");
         }};
-        */
+
         audiopathList = new ArrayList<String>(){{
-            //add("file://mnt/sdcard/Recording/record20141103222917.3gpp");
-            add("file://sdcard/recording1831815422.amr");
-            add("http://www.noiseaddicts.com/samples/2537.mp3");
-//            add("file://mnt/sdcard/Recording/record20141103222947.3gpp");
-            add("file://sdcard/recording726735500.amr");
+            add("file://mnt/sdcard/Recording/record20141103222917.3gpp");
+            //add("file://sdcard/recording1831815422.amr");
+
+            add("file://mnt/sdcard/Recording/record20141103222947.3gpp");
+            //add("file://sdcard/recording726735500.amr");
         }};
+
+        try {
+            Reader reader = new InputStreamReader(getAssets().open("sounds.json"), "UTF-8");
+            Gson gson = new GsonBuilder().create();
+            SoundSource p = gson.fromJson(reader, SoundSource.class);
+            audiopathList.add(p.getSource().getSource().getItem().get(0).getTrack().getUrl());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         setContentView(R.layout.activity_entry);
     }
@@ -66,7 +81,7 @@ public class EntryActivity extends Activity {
 
         if(keyCode == KeyEvent.KEYCODE_VOLUME_UP ||  keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             try {
-                playAudio(audiopathList.get(1));
+                playAudio(audiopathList.get(2));
             } catch (Exception e) {
                 Log.i("error : ", e.getLocalizedMessage());
                 e.printStackTrace();
@@ -124,7 +139,7 @@ public class EntryActivity extends Activity {
                 toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
 
                 try {
-                    playAudio(audiopathList.get(2));
+                    playAudio(audiopathList.get(1));
                 } catch (Exception e) {
                     Log.i("error : ", e.getLocalizedMessage());
                     e.printStackTrace();
@@ -135,11 +150,15 @@ public class EntryActivity extends Activity {
         timer.schedule(doAsynchronousTask, 19000);
     }
 
-    private void playAudio(String url) throws Exception
+    private void playAudio(String url)
+      throws Exception
     {
         killMediaPlayer();
 
-        // TODO improve the datadource with the following ...
+        //if(mediaPlayer == null)     //TODO check why is null at this time!!!!
+            mediaPlayer = new MediaPlayer();
+
+        // TODO improve the datasource with the following ...
         //AssetFileDescriptor fileDesc = getResources().openRawResourceFd(R.raw.music_file);
         //mediaPlayer.setDataSource(fileDesc.getFileDescriptor(), fileDesc.getStartOffset(), fileDesc.getLength());
         mediaPlayer.setDataSource(url);

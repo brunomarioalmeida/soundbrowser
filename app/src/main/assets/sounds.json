@@ -1,0 +1,29 @@
+{
+  "source" : {
+    "title" : "Antena 1",
+	"item" : [],
+	"source" : {
+	  "title" : "1 Minuto pela Terra",
+	  "item" : [
+	    {
+		  "title" : "Tratamento águas residuais",
+		  "pubDate" : "Fri, 31 Oct 2014 12:00:00 +0000",
+		  "track" : {
+		    "url" : "http://rsspod.rtp.pt/podcasts/at1/1410/3221632_167480-1410271228.mp3",
+			"size" : 3172352,
+			"duration" : "00:03:13"
+		  }
+		},
+	    {
+		  "title" : "Recolha de cd e dvd usados",
+		  "pubDate" : "Fri, 24 Oct 2014 12:00:00 +0100",
+		  "track" : {
+		    "url" : "http://rsspod.rtp.pt/podcasts/at1/1410/3221631_167050-1410201514.mp3",
+			"size" : 3401728,
+			"duration" : "00:03:27"
+		  }
+		}
+	  ]
+	}
+  }
+}
