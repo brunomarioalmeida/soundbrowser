@@ -4,21 +4,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".EntryActivity">
-
-    <Button
-        android:id="@+id/start"
-        android:layout_width="fill_parent"
+    <ListView
+        android:id="@+id/list"
         android:layout_height="wrap_content"
-        android:text="Start Play"
-        android:onClick="doClick"
-        />
-
-    <Button
-        android:id="@+id/stop"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Stop Play"
-        android:onClick="doClick"
-        />
-
+        android:layout_width="match_parent">
+    </ListView>
 </LinearLayout>
