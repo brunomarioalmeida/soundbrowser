@@ -7,10 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -90,10 +87,14 @@ public class EntryActivity extends Activity {
         killMediaPlayer();
     }
 
+    // TODO This method is only triggered when screen is ON. We need the opposite.
     @Override
     public boolean dispatchKeyEvent(KeyEvent event)
     {
-        int action = event.getAction();
+//        if (((PowerManager) getSystemService(POWER_SERVICE)).isScreenOn())
+//            return super.dispatchKeyEvent(event);
+
+        //int action = event.getAction();
         int keyCode = event.getKeyCode();
 
         if(keyCode == KeyEvent.KEYCODE_VOLUME_UP ||  keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
@@ -122,12 +123,14 @@ public class EntryActivity extends Activity {
         );
 
         // Show Alert
+        /*
         Toast.makeText(
             getApplicationContext(),
             " Position : " + mPosition +
             " ListItem : " + ((TextView)listView.getChildAt(mPosition)).getContentDescription(),
             Toast.LENGTH_LONG
         ).show();
+        */
 
         playAndSchedule(mPosition);
     }
