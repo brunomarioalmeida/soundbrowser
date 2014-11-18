@@ -9,16 +9,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.soundbrowser.adapter.CustomAdapter;
+import com.soundbrowser.converter.JsonToObjectConverter;
 import com.soundbrowser.model.Item;
 import com.soundbrowser.model.SoundSource;
 import com.soundbrowser.model.Track;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 
 public class EntryActivity extends Activity {
@@ -56,9 +54,9 @@ public class EntryActivity extends Activity {
         */
 
         try {
-            Reader reader = new InputStreamReader(getAssets().open("sounds.json"), "UTF-8");
-            Gson gson = new GsonBuilder().create();
-            SoundSource p = gson.fromJson(reader, SoundSource.class);
+            SoundSource p = JsonToObjectConverter.convert(
+                new InputStreamReader(getAssets().open("sounds.json"), "UTF-8")
+            );
 
             for (Item itemIn : p.getSource().getSource().getItem())
             {
