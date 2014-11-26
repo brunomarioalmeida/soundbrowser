@@ -89,11 +89,14 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             // Get each Model object from Arraylist
             itemIn = (Item) data.get(position);
 
+            if(itemIn == null)
+                return null;
+
             // Set Model values in Holder elements
             holder.desc.setText(itemIn.getTitle());
             holder.duration.setText(itemIn.getTrack().getDuration());
 
-            // Set Item Click Listner for LayoutInflater for each row
+            // Set Item Click Listener for LayoutInflater for each row
             vi.setOnClickListener(new OnItemClickListener( position ));
         }
 

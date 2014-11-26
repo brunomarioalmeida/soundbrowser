@@ -12,8 +12,7 @@ import android.widget.ListView;
 import com.soundbrowser.adapter.CustomAdapter;
 import com.soundbrowser.converter.JsonToObjectConverter;
 import com.soundbrowser.model.Item;
-import com.soundbrowser.model.SoundSource;
-import com.soundbrowser.model.Track;
+import com.soundbrowser.model.SourceRoot;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -54,22 +53,15 @@ public class EntryActivity extends Activity {
         */
 
         try {
-            SoundSource p = JsonToObjectConverter.convert(
+            SourceRoot p = JsonToObjectConverter.convert(
                 new InputStreamReader(getAssets().open("sounds.json"), "UTF-8")
             );
 
-            for (Item itemIn : p.getSource().getSource().getItem())
-            {
-                Track t = new Track();
-                t.setUrl(itemIn.getTrack().getUrl());
-                t.setDuration(itemIn.getTrack().getDuration());
+            int playlistIdx = (int) Math.ceil(Math.random()*1);
+            // TODO You should clean empty Itens
+            // Check also why the random is not working!!!
+            listViewArr.addAll(p.getItem().getItem().get(0).getItem());
 
-                Item item = new Item();
-                item.setTitle(itemIn.getTitle());
-                item.setTrack(t);
-
-                listViewArr.add(item);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

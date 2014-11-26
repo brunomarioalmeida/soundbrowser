@@ -10,7 +10,7 @@ public class Track {
     @Expose
     private String url;
     @Expose
-    private Integer size;
+    private String size;
     @Expose
     private String duration;
 
@@ -37,7 +37,7 @@ public class Track {
      * @return
      *     The size
      */
-    public Integer getSize() {
+    public String getSize() {
         return size;
     }
 
@@ -46,7 +46,7 @@ public class Track {
      * @param size
      *     The size
      */
-    public void setSize(Integer size) {
+    public void setSize(String size) {
         this.size = size;
     }
 

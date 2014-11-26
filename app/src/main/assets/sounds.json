@@ -1,281 +1,185 @@
 {
-  "source" : {
-    "title" : "Antena 1/3",
-	"item" : [],
-    "source" : {
-      title : 'Não Digo Nomes',
-      item : [
-        {
-          title : '2014-11-10 Mais uma gaga em Lisboa ',
-          pubDate : 'Mon, 10 Nov 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1411/3266926_168528-1411101332.mp3',
-            size : '2016256',
-            duration : '00:02:03'
-          }
-        },
-        {
-          title : '2014-11-07 A vacina ',
-          pubDate : 'Fri, 07 Nov 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1411/3263996_168372-1411071202.mp3',
-            size : '1851392',
-            duration : '00:01:52'
-          }
-        },
-        {
-          title : '2014-11-06 Qual circo ',
-          pubDate : 'Thu, 06 Nov 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1411/3262151_168313-1411061227.mp3',
-            size : '1599488',
-            duration : '00:01:37'
-          }
-        },
-        {
-          title : '2014-11-05 Tectos ',
-          pubDate : 'Wed, 05 Nov 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1411/3260171_168235-1411051351.mp3',
-            size : '1697792',
-            duration : '00:01:43'
-          }
-        },
-        {
-          title : '2014-11-04 As que mais ficam na cabeça ',
-          pubDate : 'Tue, 04 Nov 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1411/3258343_168063-1411041041.mp3',
-            size : '1975296',
-            duration : '00:02:00'
-          }
-        },
-        {
-          title : '2014-11-03 Reclamar ',
-          pubDate : 'Mon, 03 Nov 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1411/3256691_167947-1411031155.mp3',
-            size : '1308672',
-            duration : '00:01:19'
-          }
-        },
-        {
-          title : '2014-10-31 Coisa de bruxas ',
-          pubDate : 'Fri, 31 Oct 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3253991_167842-1410311203.mp3',
-            size : '1465344',
-            duration : '00:01:29'
-          }
-        },
-        {
-          title : '2014-10-30 O Circo Portugal. ',
-          pubDate : 'Thu, 30 Oct 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3251975_167744-1410301059.mp3',
-            size : '1776640',
-            duration : '00:01:48'
-          }
-        },
-        {
-          title : '2014-10-29 É só sacar, só sacar... ',
-          pubDate : 'Wed, 29 Oct 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3249917_167681-1410290941.mp3',
-            size : '2509824',
-            duration : '00:02:33'
-          }
-        },
-        {
-          title : '2014-10-28 Uma medalha para ti, uma medalha para mim! ',
-          pubDate : 'Tue, 28 Oct 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3248170_167633-1410281150.mp3',
-            size : '2297856',
-            duration : '00:02:20'
-          }
-        },
-        {
-          title : '2014-10-27 Coisas velhas. ',
-          pubDate : 'Mon, 27 Oct 2014 12:00:00 +0000',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3243661_167458-1410271118.mp3',
-            size : '1415168',
-            duration : '00:01:26'
-          }
-        },
-        {
-          title : '2014-10-24 Uma Kleine Levin ',
-          pubDate : 'Fri, 24 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3243609_167381-1410241023.mp3',
-            size : '2011136',
-            duration : '00:02:02'
-          }
-        },
-        {
-          title : '2014-10-23 Vou para Kiribati ',
-          pubDate : 'Thu, 23 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1411/3256374_167896-1411030101.mp3',
-            size : '1911808',
-            duration : '00:01:56'
-          }
-        },
-        {
-          title : '2014-10-22 Que enjoo. ',
-          pubDate : 'Wed, 22 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3240163_167259-1410221009.mp3',
-            size : '1847296',
-            duration : '00:01:52'
-          }
-        },
-        {
-          title : '2014-10-21 O nabo. ',
-          pubDate : 'Tue, 21 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3238274_167162-1410211039.mp3',
-            size : '2049024',
-            duration : '00:02:05'
-          }
-        },
-        {
-          title : '2014-10-20 O voto "Não"! ',
-          pubDate : 'Mon, 20 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3236716_167027-1410201329.mp3',
-            size : '2287616',
-            duration : '00:02:19'
-          }
-        },
-        {
-          title : '2014-10-17 A Athayde ',
-          pubDate : 'Fri, 17 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3233624_166918-1410171122.mp3',
-            size : '1969152',
-            duration : '00:02:00'
-          }
-        },
-        {
-          title : '2014-10-16 O meu casamento ',
-          pubDate : 'Thu, 16 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3231583_166834-1410161011.mp3',
-            size : '2456576',
-            duration : '00:02:29'
-          }
-        },
-        {
-          title : '2014-10-15 Seguro e o Estado ',
-          pubDate : 'Wed, 15 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3229676_166772-1410151042.mp3',
-            size : '2018304',
-            duration : '00:02:03'
-          }
-        },
-        {
-          title : '2014-10-14 Os prémios ',
-          pubDate : 'Tue, 14 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3227395_166692-1410141018.mp3',
-            size : '1794048',
-            duration : '00:01:49'
-          }
-        },
-        {
-          title : '2014-10-13 Sem asas ',
-          pubDate : 'Mon, 13 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3225375_166529-1410131106.mp3',
-            size : '1786880',
-            duration : '00:01:49'
-          }
-        },
-        {
-          title : '2014-10-10 Lisboa chinesa ',
-          pubDate : 'Fri, 10 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3222532_166441-1410101013.mp3',
-            size : '1636352',
-            duration : '00:01:39'
-          }
-        },
-        {
-          title : '2014-10-09 O pulinho. ',
-          pubDate : 'Thu, 09 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3220720_166389-1410091012.mp3',
-            size : '1846272',
-            duration : '00:01:52'
-          }
-        },
-        {
-          title : '2014-10-08 Dá-me um abraço. ',
-          pubDate : 'Wed, 08 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3218908_166303-1410081044.mp3',
-            size : '2107392',
-            duration : '00:02:08'
-          }
-        },
-        {
-          title : '2014-10-07 Dia do professor ',
-          pubDate : 'Tue, 07 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3217403_166200-1410071108.mp3',
-            size : '2215936',
-            duration : '00:02:15'
-          }
-        },
-        {
-          title : '2014-10-06 A utopia ',
-          pubDate : 'Mon, 06 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3215754_166093-1410061121.mp3',
-            size : '2253824',
-            duration : '00:02:17'
-          }
-        },
-        {
-          title : '2014-10-03 Qual gripe? ',
-          pubDate : 'Fri, 03 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3212589_165997-1410031011.mp3',
-            size : '2211840',
-            duration : '00:02:14'
-          }
-        },
-        {
-          title : '2014-10-02 Os nossos velhos ',
-          pubDate : 'Thu, 02 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3211231_165929-1410021122.mp3',
-            size : '1800192',
-            duration : '00:01:49'
-          }
-        },
-        {
-          title : '2014-10-01 O aumento. ',
-          pubDate : 'Wed, 01 Oct 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1410/3209245_165875-1410011020.mp3',
-            size : '1698816',
-            duration : '00:01:43'
-          }
-        },
-        {
-          title : '2014-09-30 As intrusas ',
-          pubDate : 'Tue, 30 Sep 2014 12:00:00 +0100',
-          track : {
-            url : 'http://rsspod.rtp.pt/podcasts/at3/1409/3207443_165713-1409301218.mp3',
-            size : '2114560',
-            duration : '00:02:09'
-          }
-        }
-      ]
-    }
+  "item" : {
+    "title" : "Academia RTP",
+    "item" : [
+      {
+        "title" : "Pessoas Que São Cidades",
+        item : [ 
+          {
+    	    title : '2013-01-27 Coimbra ',
+    	    pubDate : 'Sun, 27 Jan 2013 12:00:00 +0000',
+    	    track : {
+    	      url : 'http://rsspod.rtp.pt/podcasts/at1/1301/2311894_128363-1301250641.mp3',
+    		  size : '20507648',
+    		  duration : '00:20:51'
+    	    }
+    	  },
+    	  {
+	  	    title : '2013-01-04 Setúbal ',
+	  	    pubDate : 'Fri, 04 Jan 2013 12:00:00 +0000',
+	  	    track : {
+	  	      url : 'http://rsspod.rtp.pt/podcasts/at1/1301/2278554_127049-1301040622.mp3',
+	  		  size : '20056064',
+	  		  duration : '00:20:24'
+	  	    }
+	  	  } 
+    	]
+      },
+		{
+		  title : 'Tradição XXI',
+		  item : [ 
+		    {
+		      title : '2012-12-23 Minho ',
+		  	  pubDate : 'Sun, 23 Dec 2012 12:00:00 +0000',
+		  	  track : {
+		  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2260244_126290-1212200556.mp3',
+		  		size : '25248768',
+		  		duration : '00:25:41'
+		  	  }
+		  	}, 
+		    {
+		      title : '2012-12-16 Trás-os-Montes ',
+		  	  pubDate : 'Sun, 16 Dec 2012 12:00:00 +0000',
+		  	  track : {
+		  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2255032_126008-1212171428.mp3',
+		  		size : '25214976',
+		  		duration : '00:25:39'
+		  	  }
+		  	}, 
+		    {
+		      title : '2012-12-09 Beira Baixa ',
+		  	  pubDate : 'Sun, 09 Dec 2012 12:00:00 +0000',
+		  	  track : {
+		  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2239519_125476-1212070631.mp3',
+		  		size : '25226240',
+		  		duration : '00:25:39'
+		  	  }
+		  	}, 
+		    {
+		      title : '2012-12-02 Alentejo ',
+		  	  pubDate : 'Sun, 02 Dec 2012 12:00:00 +0000',
+		  	  track : {
+		  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1211/2228144_125040-1211301149.mp3',
+		  		size : '25138176',
+		  		duration : '00:25:34'
+		  	  }
+		  	},
+		  ]
+		},
+{
+  title : 'Ainda Sou do Tempo',
+  item : [ 
+    {
+      title : '2012-12-23 Chocalhos ',
+  	  pubDate : 'Sun, 23 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2260243_126289-1212200556.mp3',
+  		size : '12133376',
+  		duration : '00:12:20'
+  	  }
+  	}, 
+    {
+      title : '2012-12-16 Olaria de Nisa ',
+  	  pubDate : 'Sun, 16 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2255030_126007-1212171428.mp3',
+  		size : '12313600',
+  		duration : '00:12:31'
+  	  }
+  	}, 
+    {
+      title : '2012-12-09 Vinho dos Mortos ',
+  	  pubDate : 'Sun, 09 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2239518_125475-1212070631.mp3',
+  		size : '11416576',
+  		duration : '00:11:36'
+  	  }
+  	}, 
+    {
+      title : '2012-12-02 Arte da Filigrana. ',
+  	  pubDate : 'Sun, 02 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2231231_125115-1212030654.mp3',
+  		size : '12286976',
+  		duration : '00:12:29'
+  	  }
+  	}, 
+  ]
+},
+{
+  title : 'Histórias de Rios',
+  item : [ 
+    {
+      title : '2012-12-22 Rio Guadiana ',
+  	  pubDate : 'Sat, 22 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2260239_126285-1212200551.mp3',
+  		size : '19477504',
+  		duration : '00:19:48'
+  	  }
+  	}, 
+    {
+      title : '2012-12-15 Rio Zêzere ',
+  	  pubDate : 'Sat, 15 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2255026_126005-1212171433.mp3',
+  		size : '18916352',
+  		duration : '00:19:14'
+  	  }
+  	}, 
+    {
+      title : '2012-12-08 Rio Vouga ',
+  	  pubDate : 'Sat, 08 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1301/2284262_127318-1301081522.mp3',
+  		size : '19109888',
+  		duration : '00:19:26'
+  	  }
+  	}, 
+    {
+      title : '2012-12-01 Rio Minho ',
+  	  pubDate : 'Sat, 01 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/podcasts/at1/1212/2231230_125114-1212030654.mp3',
+  		size : '20432896',
+  		duration : '00:20:47'
+  	  }
+  	}, 
+  ]
+},
+{
+  title : 'Layout',
+  item : [ 
+    {
+      title : '2012-12-28 Layout ',
+  	  pubDate : 'Fri, 28 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/videocasts/512x384/layout/layout_20121228.mp4',
+  		size : '215602288',
+  		duration : '00:24:59'
+  	  }
+  	}, 
+    {
+      title : '2012-12-21 Layout ',
+  	  pubDate : 'Fri, 21 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/videocasts/512x384/layout/layout_20121221.mp4',
+  		size : '213526404',
+  		duration : '00:24:46'
+  	  }
+  	}, 
+    {
+      title : '2012-12-14 Layout ',
+  	  pubDate : 'Fri, 14 Dec 2012 12:00:00 +0000',
+  	  track : {
+  	    url : 'http://rsspod.rtp.pt/videocasts/512x384/layout/layout_20121214.mp4',
+  		size : '217277802',
+  		duration : '00:25:11'
+  	  }
+  	}, 
+  ]
+},  
+    ]
   }
-}
+}    

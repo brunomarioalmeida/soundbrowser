@@ -1,18 +1,37 @@
 
 package com.soundbrowser.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Generated;
+
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.Since;
 
 @Generated("org.jsonschema2pojo")
 public class Item {
 
+    @Since(1.0)
     @Expose
     private String title;
     @Expose
     private String pubDate;
     @Expose
     private Track track;
+    @Expose
+    private List<Item> item = new ArrayList<Item>();
+
+    @Since(1.1)
+    private String fieldToBe;
+    
+	public String getFieldToBe() {
+		return fieldToBe;
+	}
+
+	public void setFieldToBe(String fieldToBe) {
+		this.fieldToBe = fieldToBe;
+	}
 
     /**
      * 
@@ -30,6 +49,24 @@ public class Item {
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * 
+     * @return
+     *     The item
+     */
+    public List<Item> getItem() {
+        return item;
+    }
+
+    /**
+     * 
+     * @param item
+     *     The item
+     */
+    public void setItem(List<Item> item) {
+        this.item = item;
     }
 
     /**
@@ -67,5 +104,4 @@ public class Item {
     public void setTrack(Track track) {
         this.track = track;
     }
-
 }
