@@ -2,11 +2,13 @@ package com.soundbrowser;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ListView;
 
 import com.soundbrowser.adapter.CustomAdapter;
@@ -17,6 +19,8 @@ import com.soundbrowser.model.SourceRoot;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EntryActivity extends Activity {
 
@@ -24,8 +28,14 @@ public class EntryActivity extends Activity {
     private AudioManager am;
 
     private ListView listView;
-    private  ArrayList<Item> listViewArr = new ArrayList<Item>();
+//    private List<Item> listViewArr = new ArrayList<Item>();
+    private List<Item> currentListItem;
+    private List<Item> parentListItem;
+    private SourceRoot sourceData;
     private int currentPosition;
+    private short depth = 0;
+
+    private CustomAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -52,21 +62,24 @@ public class EntryActivity extends Activity {
         }};
         */
 
+        List<Item> listViewArr = new ArrayList<Item>();
         try {
-            SourceRoot p = JsonToObjectConverter.convert(
+            sourceData = JsonToObjectConverter.convert(
                 new InputStreamReader(getAssets().open("sounds.json"), "UTF-8")
             );
 
             int playlistIdx = (int) Math.ceil(Math.random()*1);
             // TODO You should clean empty Itens
             // Check also why the random is not working!!!
-            listViewArr.addAll(p.getItem().getItem().get(0).getItem());
+            currentListItem = sourceData.getItem().getItem();
+            //listViewArr.addAll(sourceData.getItem().getItem().get(0).getItem());
+            listViewArr.addAll(currentListItem);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        CustomAdapter adapter = new CustomAdapter( this, listViewArr, getResources() );
+        adapter = new CustomAdapter( this, listViewArr, getResources() );
         listView.setAdapter(adapter);
     }
 
@@ -87,12 +100,37 @@ public class EntryActivity extends Activity {
         //int action = event.getAction();
         int keyCode = event.getKeyCode();
 
-        if(keyCode == KeyEvent.KEYCODE_VOLUME_UP ||  keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            if(depth == 0)
+                return super.dispatchKeyEvent(event);
+
+            currentListItem = parentListItem;
+
+            adapter.setData(currentListItem);
+            adapter.notifyDataSetChanged();
+
+            currentPosition = 0;
+            depth--;
+
+            colorSwitcher();
+
+            return true;
+        }
+
+        if(keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             try {
-                if(keyCode == KeyEvent.KEYCODE_VOLUME_UP)
+                if(keyCode == KeyEvent.KEYCODE_VOLUME_UP);
                     currentPosition++;
                 if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
                     currentPosition--;
+
+                // Safety
+                if(currentPosition<0) currentPosition=0;
+                if(currentPosition>=currentListItem.size()) currentPosition=currentListItem.size()-1;
+
+                // Color switch
+                colorSwitcher();
 
                 playAndSchedule(currentPosition);
 
@@ -105,30 +143,50 @@ public class EntryActivity extends Activity {
             return super.dispatchKeyEvent(event);
     }
 
+    private void colorSwitcher()
+    {
+        //listView.setBackgroundColor(Color.WHITE);  // TODO Not doing anything !!!!!
+        for(View v : listView.getTouchables())
+            v.setBackgroundColor(getResources().getColor(android.R.color.white));
+        listView.getChildAt(currentPosition).setBackgroundColor(
+                getResources().getColor(android.R.color.holo_orange_dark)
+        );
+    }
+
     // This function used by adapter
     public void onItemClick(int mPosition)
     {
-        listView.getChildAt(mPosition).setBackgroundColor(
-            getResources().getColor(android.R.color.holo_orange_dark)
-        );
+        if(currentListItem.get(mPosition).getTrack() == null)
+        {
+            parentListItem = currentListItem;
 
-        // Show Alert
-        /*
-        Toast.makeText(
-            getApplicationContext(),
-            " Position : " + mPosition +
-            " ListItem : " + ((TextView)listView.getChildAt(mPosition)).getContentDescription(),
-            Toast.LENGTH_LONG
-        ).show();
-        */
+            currentListItem = currentListItem.get(mPosition).getItem();
+            adapter.setData(currentListItem);
+            adapter.notifyDataSetChanged();
 
-        playAndSchedule(mPosition);
+            currentPosition = 0;
+            depth++;
+        }
+        else {
+            // Show Alert
+            /*
+            Toast.makeText(
+                getApplicationContext(),
+                " Position : " + mPosition +
+                " ListItem : " + ((TextView)listView.getChildAt(mPosition)).getContentDescription(),
+                Toast.LENGTH_LONG
+            ).show();
+            */
+            playAndSchedule(mPosition);
+        }
+
+        colorSwitcher();
     }
 
     private void playAndSchedule(int position)
     {
         try {
-            playAudio((( Item ) listViewArr.get(position)).getTrack().getUrl());
+            playAudio(currentListItem.get(position).getTrack().getUrl());
         } catch (Exception e) {
             Log.i("error : ", e.getLocalizedMessage());
             e.printStackTrace();

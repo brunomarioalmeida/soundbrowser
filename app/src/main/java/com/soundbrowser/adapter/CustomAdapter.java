@@ -15,6 +15,7 @@ import com.soundbrowser.R;
 import com.soundbrowser.model.Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by bold on 16-11-2014.
@@ -22,14 +23,14 @@ import java.util.ArrayList;
 public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Activity activity;
-    private ArrayList data;
-    public Resources res;
+    private List data;
+    public  Resources res;
     private static LayoutInflater inflater = null;
 
     Item itemIn;
     int i = 0;
 
-    public CustomAdapter(Activity a, ArrayList d,Resources resLocal) {
+    public CustomAdapter(Activity a, List<Item> d,Resources resLocal) {
         activity = a;
         data = d;
         res = resLocal;
@@ -40,7 +41,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
     }
 
     public int getCount() {
-        if(data.size()<=0)
+        if(data == null || data.size()<=0)
             return 1;
         return data.size();
     }
@@ -82,7 +83,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
         else
             holder = (ViewHolder) vi.getTag();
 
-        if(data.size()<=0)
+        if(data == null || data.size()<=0)
             holder.desc.setText("No Data");
         else
         {
@@ -94,13 +95,22 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
             // Set Model values in Holder elements
             holder.desc.setText(itemIn.getTitle());
-            holder.duration.setText(itemIn.getTrack().getDuration());
+            if(itemIn.getTrack() != null)
+                holder.duration.setText(itemIn.getTrack().getDuration());
 
             // Set Item Click Listener for LayoutInflater for each row
             vi.setOnClickListener(new OnItemClickListener( position ));
         }
 
         return vi;
+    }
+
+    public List getData() {
+        return data;
+    }
+
+    public void setData(List data) {
+        this.data = data;
     }
 
     @Override
