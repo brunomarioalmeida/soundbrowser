@@ -21,6 +21,8 @@ public class Item {
     private Track track;
     @Expose
     private List<Item> item = new ArrayList<Item>();
+    
+    private Item parent;
 
     @Since(1.1)
     private String fieldToBe;
@@ -56,8 +58,16 @@ public class Item {
      * @return
      *     The item
      */
-    public List<Item> getItem() {
-        return item;
+    public List<Item> getItem() 
+    {
+    	if(item.isEmpty())
+    		return item;
+    	
+    	if(item.get(0).getParent() == null)
+        	for (Item child : item) 
+        		child.setParent(this);
+    	
+    	return item;
     }
 
     /**
@@ -104,4 +114,12 @@ public class Item {
     public void setTrack(Track track) {
         this.track = track;
     }
+
+	public Item getParent() {
+		return parent;
+	}
+
+	public void setParent(Item parent) {
+		this.parent = parent;
+	}
 }

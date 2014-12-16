@@ -23,7 +23,7 @@ import java.util.List;
 public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Activity activity;
-    private List data;
+    private List<Item> data;
     public  Resources res;
     private static LayoutInflater inflater = null;
 
@@ -94,7 +94,11 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
                 return null;
 
             // Set Model values in Holder elements
-            holder.desc.setText(itemIn.getTitle());
+            holder.desc.setText(
+            	itemIn.getTitle() != null ? 
+            	itemIn.getTitle() : 
+            	itemIn.getItem().get(0).getTitle()
+            );
             if(itemIn.getTrack() != null)
                 holder.duration.setText(itemIn.getTrack().getDuration());
 
@@ -105,11 +109,11 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
         return vi;
     }
 
-    public List getData() {
+    public List<Item> getData() {
         return data;
     }
 
-    public void setData(List data) {
+    public void setData(List<Item> data) {
         this.data = data;
     }
 

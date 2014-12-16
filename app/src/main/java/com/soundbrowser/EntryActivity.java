@@ -1,8 +1,12 @@
 package com.soundbrowser;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -15,12 +19,7 @@ import com.soundbrowser.adapter.CustomAdapter;
 import com.soundbrowser.converter.JsonToObjectConverter;
 import com.soundbrowser.model.Item;
 import com.soundbrowser.model.SourceRoot;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.soundbrowser.services.PodcastService;
 
 public class EntryActivity extends Activity {
 
@@ -28,12 +27,9 @@ public class EntryActivity extends Activity {
     private AudioManager am;
 
     private ListView listView;
-//    private List<Item> listViewArr = new ArrayList<Item>();
     private List<Item> currentListItem;
-    private List<Item> parentListItem;
     private SourceRoot sourceData;
     private int currentPosition;
-    private short depth = 0;
 
     private CustomAdapter adapter;
 
@@ -65,14 +61,17 @@ public class EntryActivity extends Activity {
         List<Item> listViewArr = new ArrayList<Item>();
         try {
             sourceData = JsonToObjectConverter.convert(
-                new InputStreamReader(getAssets().open("sounds.json"), "UTF-8")
+                new InputStreamReader(getAssets().open("rtp_antena_3_flat.json"), "UTF-8")
             );
 
             int playlistIdx = (int) Math.ceil(Math.random()*1);
             // TODO You should clean empty Itens
             // Check also why the random is not working!!!
-            currentListItem = sourceData.getItem().getItem();
-            //listViewArr.addAll(sourceData.getItem().getItem().get(0).getItem());
+//            currentListItem = sourceData.getItem().get(0).getItem().get(0).getItem();
+            currentListItem = PodcastService.getItemBaseForPodcastItensList(
+            	sourceData.getItem().get(0)
+            ).getItem();
+            
             listViewArr.addAll(currentListItem);
 
         } catch (IOException e) {
@@ -97,37 +96,20 @@ public class EntryActivity extends Activity {
 //        if (((PowerManager) getSystemService(POWER_SERVICE)).isScreenOn())
 //            return super.dispatchKeyEvent(event);
 
-        //int action = event.getAction();
+        int action = event.getAction();
         int keyCode = event.getKeyCode();
 
-        if(keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            if(depth == 0)
-                return super.dispatchKeyEvent(event);
-
-            currentListItem = parentListItem;
-
-            adapter.setData(currentListItem);
-            adapter.notifyDataSetChanged();
-
-            currentPosition = 0;
-            depth--;
-
-            colorSwitcher();
-
-            return true;
-        }
-
-        if(keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             try {
-                if(keyCode == KeyEvent.KEYCODE_VOLUME_UP);
-                    currentPosition++;
-                if(keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+                if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) ;
+                currentPosition++;
+                if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
                     currentPosition--;
 
                 // Safety
-                if(currentPosition<0) currentPosition=0;
-                if(currentPosition>=currentListItem.size()) currentPosition=currentListItem.size()-1;
+                if (currentPosition < 0) currentPosition = 0;
+                if (currentPosition >= currentListItem.size())
+                    currentPosition = currentListItem.size() - 1;
 
                 // Color switch
                 colorSwitcher();
@@ -139,7 +121,27 @@ public class EntryActivity extends Activity {
                 e.printStackTrace();
             }
             return true;
-        } else
+        }
+
+        if (action == KeyEvent.ACTION_UP) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                try {
+                    currentListItem = PodcastService.recursiveListUp(currentListItem.get(0)).
+                            getParent().getParent().getItem();
+                } catch (NullPointerException e) {
+                    return super.dispatchKeyEvent(event);
+                }
+
+                adapter.setData(currentListItem);
+                adapter.notifyDataSetChanged();
+
+                currentPosition = 0;
+
+                colorSwitcher();
+            }
+            return true;
+        }
+        else
             return super.dispatchKeyEvent(event);
     }
 
@@ -148,9 +150,10 @@ public class EntryActivity extends Activity {
         //listView.setBackgroundColor(Color.WHITE);  // TODO Not doing anything !!!!!
         for(View v : listView.getTouchables())
             v.setBackgroundColor(getResources().getColor(android.R.color.white));
-        listView.getChildAt(currentPosition).setBackgroundColor(
+        if(listView.getChildCount() > 0)
+	        listView.getChildAt(currentPosition).setBackgroundColor(
                 getResources().getColor(android.R.color.holo_orange_dark)
-        );
+	        );
     }
 
     // This function used by adapter
@@ -158,14 +161,11 @@ public class EntryActivity extends Activity {
     {
         if(currentListItem.get(mPosition).getTrack() == null)
         {
-            parentListItem = currentListItem;
-
             currentListItem = currentListItem.get(mPosition).getItem();
             adapter.setData(currentListItem);
             adapter.notifyDataSetChanged();
 
             currentPosition = 0;
-            depth++;
         }
         else {
             // Show Alert
