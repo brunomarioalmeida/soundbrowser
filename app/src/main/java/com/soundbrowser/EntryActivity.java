@@ -99,12 +99,14 @@ public class EntryActivity extends Activity {
         int action = event.getAction();
         int keyCode = event.getKeyCode();
 
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+        if (action == KeyEvent.ACTION_DOWN && (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
             try {
                 if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) ;
-                currentPosition++;
-                if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
+                    currentPosition++;
+                if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN){
                     currentPosition--;
+                    currentPosition--; // TODO Verifica o porque da necessidade da dupla invocacao
+                }
 
                 // Safety
                 if (currentPosition < 0) currentPosition = 0;
@@ -122,6 +124,8 @@ public class EntryActivity extends Activity {
             }
             return true;
         }
+        else
+            //return super.dispatchKeyEvent(event);
 
         if (action == KeyEvent.ACTION_UP) {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
