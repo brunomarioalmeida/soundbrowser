@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+		<!--receiver android:name=".EntryActivity.MyBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.media.VOLUME_CHANGED_ACTION" >
+                </action>
+            </intent-filter>
+        </receiver-->
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

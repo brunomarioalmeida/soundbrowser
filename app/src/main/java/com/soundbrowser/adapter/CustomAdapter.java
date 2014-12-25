@@ -16,6 +16,7 @@ import com.soundbrowser.model.Item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by bold on 16-11-2014.
@@ -99,6 +100,10 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             	itemIn.getTitle() : 
             	itemIn.getItem().get(0).getTitle()
             );
+            // TODO Some cleaning, but this should be done somewhere else
+            if(Pattern.compile("\\d{4}-\\d{2}-\\d{2}.*").matcher(holder.desc.getText()).matches())
+            	holder.desc.setText(((String)holder.desc.getText()).substring(10).trim());
+            
             if(itemIn.getTrack() != null)
                 holder.duration.setText(itemIn.getTrack().getDuration());
 

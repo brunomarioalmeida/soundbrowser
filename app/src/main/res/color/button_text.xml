@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true"
+          android:color="#ffff0000"> <!--  pressed -->
+  <!--shape>
+     <gradient
+      android:startColor="#E77A26"
+        android:endColor="#E77A26"
+        android:angle="270" />
+  </shape-->
+    </item>
+    <item android:state_focused="true"
+          android:color="#ff0000ff"/> <!-- focused -->
+    <item android:color="#ff000000"/> <!-- default -->
+</selector>

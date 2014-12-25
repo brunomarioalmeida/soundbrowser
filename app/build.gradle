@@ -1,3 +1,11 @@
+task startApp(type: Exec, dependsOn: 'installDebug') {
+    // linux
+    //commandLine 'adb', 'shell', 'am', 'start', '-n', 'com.soundbrowser/.EntryActivity'
+
+    // windows
+    commandLine 'cmd', '/c', 'adb', 'shell', 'am', 'start', '-n', 'com.soundbrowser/.EntryActivity'
+}
+
 apply plugin: 'com.android.application'
 
 android {

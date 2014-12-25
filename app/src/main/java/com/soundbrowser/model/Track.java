@@ -1,7 +1,11 @@
 
 package com.soundbrowser.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Generated;
+
 import com.google.gson.annotations.Expose;
 
 @Generated("org.jsonschema2pojo")
@@ -13,7 +17,9 @@ public class Track {
     private String size;
     @Expose
     private String duration;
-
+    @Expose
+    private List<Timming> timmings = new ArrayList<Timming>();
+    
     /**
      * 
      * @return
@@ -68,4 +74,21 @@ public class Track {
         this.duration = duration;
     }
 
+    /**
+    * 
+    * @return
+    * The timmings
+    */
+    public List<Timming> getTimmings() {
+    	return timmings;
+    }
+
+    /**
+    * 
+    * @param timmings
+    * The timmings
+    */
+    public void setTimmings(List<Timming> timmings) {
+    	this.timmings = timmings;
+    }
 }
