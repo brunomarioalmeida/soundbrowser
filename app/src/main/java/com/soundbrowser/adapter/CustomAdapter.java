@@ -1,5 +1,8 @@
 package com.soundbrowser.adapter;
 
+import java.util.List;
+import java.util.regex.Pattern;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,16 +13,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.soundbrowser.EntryActivity;
+import com.soundbrowser.EntryPoint;
 import com.soundbrowser.R;
-import com.soundbrowser.model.Item;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
+import com.soundbrowser.persistence.model.Item;
 
 /**
- * Created by bold on 16-11-2014.
+ * Created by balmeida on 16-11-2014.
  */
 public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
 
@@ -138,7 +137,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
         @Override
         public void onClick(View arg0)
         {
-            EntryActivity sct = (EntryActivity)activity;
+            EntryPoint sct = (EntryPoint)activity;
             sct.onItemClick(mPosition);
         }
     }

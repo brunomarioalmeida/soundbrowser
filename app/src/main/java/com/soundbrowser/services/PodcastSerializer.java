@@ -8,8 +8,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 import com.google.gson.GsonBuilder;
-import com.soundbrowser.converter.JsonToObjectConverter;
-import com.soundbrowser.model.SourceRoot;
+import com.soundbrowser.converters.JsonToObjectConverter;
+import com.soundbrowser.persistence.model.SourceRoot;
 
 public class PodcastSerializer {
 

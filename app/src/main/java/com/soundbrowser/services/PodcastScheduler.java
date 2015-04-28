@@ -1,7 +1,6 @@
 package com.soundbrowser.services;
 
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -9,8 +8,9 @@ import java.util.concurrent.TimeUnit;
 import android.media.MediaPlayer;
 import android.util.Log;
 
-import com.soundbrowser.model.Timming;
-import com.soundbrowser.model.Track;
+import com.soundbrowser.persistence.model.Timming;
+import com.soundbrowser.persistence.model.Track;
+import com.soundbrowser.utils.GeneralUtils;
 
 public class PodcastScheduler {
 
@@ -20,21 +20,21 @@ public class PodcastScheduler {
     	ScheduledThreadPoolExecutor sch = (ScheduledThreadPoolExecutor)
     		Executors.newScheduledThreadPool(timmingsLst.size());
         
-        // TODO - Refactor
-    	int previousMiliSeconds = getTimeMiliseconds(timmingsLst.get(0).getPivotStart());
-        for (Timming timming : timmingsLst) 
-        {
-        	int miliSeconds = getTimeMiliseconds(timming.getPivotStart()) + previousMiliSeconds;
-        	timming.setAcumulatedMiliSeconds(miliSeconds);
-        	previousMiliSeconds = miliSeconds;
-        }
+    	GeneralUtils.calculateAccumulatedTimmings(timmingsLst);
         
-//      sch.schedule(getRunnable("01:00"), 5, TimeUnit.SECONDS);
-        for (Timming timming : timmingsLst) 
+//    	sch.schedule(getRunnable("01:00"), 5, TimeUnit.SECONDS);
+        for (int i = 0; i < timmingsLst.size(); i++) 
         	sch.schedule(
-        		getRunnable(timming.getPivotStart(), mediaPlayer), 
-        		timming.getAcumulatedMiliSeconds(), 
+        		getRunnable(timmingsLst.get(i+1).getPivotStart(), mediaPlayer), 
+        		timmingsLst.get(i).getAcumulatedMiliSeconds(), 
         		TimeUnit.MILLISECONDS
+        	);
+        for (int i = 1; i < timmingsLst.size()+1; i++) 
+        	sch.scheduleWithFixedDelay(
+        		getRunnable(timmingsLst.get(i).getPivotStart(), mediaPlayer),
+        		30*i,
+        		30*i, 
+        		TimeUnit.SECONDS
         	);
         
         /* TODO use this later if needed
@@ -60,22 +60,13 @@ public class PodcastScheduler {
         */
 	}
 
-    // TODO Refactor
-    private int getTimeMiliseconds(String time)
-    {
-        StringTokenizer sT = new StringTokenizer(time, ":");
-        int minutos = Integer.parseInt(sT.nextToken());
-        int segundos = Integer.parseInt(sT.nextToken());
-        return (60*minutos + segundos)*1000;
-    }
-
     private Runnable getRunnable(final String time, final MediaPlayer mediaPlayer){
         Runnable runnable = new Runnable(){
             @Override
             public void run() {
-                int timeMs = getTimeMiliseconds(time);
+                int timeMs = GeneralUtils.getTimeMiliseconds(time);
                 mediaPlayer.seekTo(timeMs);
-                Log.i("time : ", time + " - " + timeMs);
+                Log.i("soundbrowser", time + " - " + timeMs);
             }
         };
 
