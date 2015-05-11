@@ -97,7 +97,7 @@ public class CustomAdapter extends BaseAdapter implements View.OnClickListener {
             holder.desc.setText(
             	itemIn.getTitle() != null ? 
             	itemIn.getTitle() : 
-            	itemIn.getItem().get(0).getTitle()
+            	itemIn.getItemLst().get(0).getTitle()
             );
             // TODO Some cleaning, but this should be done somewhere else
             if(Pattern.compile("\\d{4}-\\d{2}-\\d{2}.*").matcher(holder.desc.getText()).matches())

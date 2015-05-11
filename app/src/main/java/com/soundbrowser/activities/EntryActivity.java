@@ -112,7 +112,7 @@ public class EntryActivity extends Activity {
             // TODO You should clean empty Itens
             currentListItem = PodcastService.getItemBaseForPodcastItensList(
             	sourceData.getItem().get(0)
-            ).getItem();
+            ).getItemLst();
             
             listViewArr.addAll(currentListItem);
 
@@ -175,7 +175,7 @@ public class EntryActivity extends Activity {
                 try {
                     currentListItem = PodcastService.
                     	recursiveListUp(currentListItem.get(0)).
-                    		getParent().getParent().getItem();
+                    		getParent().getParent().getItemLst();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                     return super.dispatchKeyEvent(event);
@@ -199,7 +199,7 @@ public class EntryActivity extends Activity {
     {
         if(currentListItem.get(mPosition).getTrack() == null)
         {
-            currentListItem = currentListItem.get(mPosition).getItem();
+            currentListItem = currentListItem.get(mPosition).getItemLst();
             adapter.setData(currentListItem);
             adapter.notifyDataSetChanged();
 
@@ -232,7 +232,7 @@ public class EntryActivity extends Activity {
 			playAudio(url);
 
 			Track track = currentListItem.get(position).getTrack();
-    		if(!(track.getTimmings() == null || track.getTimmings().isEmpty()))
+    		if(!(track.getTimmingsLst() == null || track.getTimmingsLst().isEmpty()))
     			new PodcastScheduler().setupAudioSchedules(track, mediaPlayer);
     		
         } catch (Exception e) {

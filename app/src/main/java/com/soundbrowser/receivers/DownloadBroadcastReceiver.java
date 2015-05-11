@@ -61,7 +61,8 @@ public class DownloadBroadcastReceiver extends BroadcastReceiver {
     	File f = new File(
     		Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + 
     		Environment.DIRECTORY_DOWNLOADS + "/" + 
-    		url.substring(url.indexOf("podcasts"))
+//    		url.substring(url.indexOf("podcasts"))
+    		url.substring(url.indexOf("wavrss"))
     	);
         Log.i("soundbrowser", f.getAbsolutePath());
         
@@ -88,10 +89,13 @@ public class DownloadBroadcastReceiver extends BroadcastReceiver {
             
             r.setDestinationInExternalPublicDir(
             	Environment.DIRECTORY_DOWNLOADS,
-            	url.substring(url.indexOf("podcasts"))
+//            	url.substring(url.indexOf("podcasts"))
+            	url.substring(url.indexOf("wavrss"))
         	);
 
             enqueue = dm.enqueue(r);
     	}
     }
 }
+
+//dm.remove(ids)

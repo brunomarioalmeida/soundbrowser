@@ -16,7 +16,7 @@ public class PodcastScheduler {
 
     public void setupAudioSchedules(Track track, MediaPlayer mediaPlayer) 
     {
-        List<Timming> timmingsLst = track.getTimmings();
+        List<Timming> timmingsLst = track.getTimmingsLst();
     	ScheduledThreadPoolExecutor sch = (ScheduledThreadPoolExecutor)
     		Executors.newScheduledThreadPool(timmingsLst.size());
         

@@ -12,9 +12,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.StrictMode;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
@@ -26,7 +24,9 @@ import com.soundbrowser.persistence.model.Item;
 import com.soundbrowser.persistence.model.Track;
 import com.soundbrowser.persistence.ormlite.DatabaseHelper;
 import com.soundbrowser.receivers.DownloadBroadcastReceiver;
+import com.soundbrowser.services.PodcastScheduler;
 import com.soundbrowser.services.PodcastService;
+import com.soundbrowser.utils.GeneralUtils;
 
 public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
 
@@ -73,11 +73,11 @@ public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
         	}
         );
         
-        swipelistview.setOffsetLeft(convertDpToPixel(0f)); // left side offset
-        swipelistview.setOffsetRight(convertDpToPixel(80f)); // right side offset
+        swipelistview.setOffsetLeft(GeneralUtils.convertDpToPixel(0f, getResources())); // left side offset
+        swipelistview.setOffsetRight(GeneralUtils.convertDpToPixel(80f, getResources())); // right side offset
         swipelistview.setAdapter(adapter);
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.
+        		
         	Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         
@@ -96,7 +96,7 @@ public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
         for (Item it : currentListItem)
             itemData.add(
                 new ItemRow(
-                    it.getTitle(),
+                    it.getTitle(), it.getTrack().getUrl(),
                     getResources().getDrawable(R.drawable.ic_launcher)
                 )
             );
@@ -131,60 +131,6 @@ public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
         unregisterReceiver(downloadBReceiver);
     }
     
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event)
-    {
-        Log.i("soundbrowser", "dispatchKeyEvent");
-        if(true)
-            return super.dispatchKeyEvent(event);
-
-        int action = event.getAction();
-        int keyCode = event.getKeyCode();
-
-        if (action == KeyEvent.ACTION_UP) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) 
-            {
-                Log.i("soundbrowser", "KEYCODE_BACK pressed");
-                try {
-                    currentListItem = PodcastService.
-                    	recursiveListUp(currentListItem.get(0)).
-                    		getParent().getParent().getItem();
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                    return super.dispatchKeyEvent(event);
-                }
-
-                itemData.clear();
-                for (Item it : currentListItem)
-                    itemData.add(
-                        new ItemRow(
-                            it.getTitle(),
-                            getResources().getDrawable(R.drawable.ic_launcher)
-                        )
-                    );
-                
-                
-                adapter.setData(itemData);
-                adapter.notifyDataSetChanged();
-
-                currentPosition = 0;
-                
-                return true;
-            } else
-	            return super.dispatchKeyEvent(event);
-        }
-        else
-            return super.dispatchKeyEvent(event);
-    }
-
-    // TODO Refactor this into a utility
-    public int convertDpToPixel(float dp) 
-    {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / 160f);
-        return (int) px;
-    }
-    
     private String playAndSchedule(int position)
     {
     	if(currentListItem.get(position).getTrack() == null)
@@ -204,9 +150,9 @@ public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
 //				playAudio(f.exists()?localUrl:url);
 			playAudio(url);
 
-//				com.soundbrowser.persistence.model.Track track = currentListItem.get(position).getTrack();
-//	    		if(!(track.getTimmings2() == null || track.getTimmings2().isEmpty()))
-//	    			new PodcastScheduler().setupAudioSchedules(track, mediaPlayer);
+			com.soundbrowser.persistence.model.Track track = currentListItem.get(position).getTrack();
+    		if(!(track.getTimmings() == null || track.getTimmings().isEmpty()))
+    			new PodcastScheduler().setupAudioSchedules(track, mediaPlayer);
     		
         } catch (Exception e) {
             Log.i("error : ", e.getLocalizedMessage());
@@ -242,7 +188,7 @@ public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
     }
 
     public void onItemClick(int mPosition) {
-        String url = playAndSchedule(mPosition);
+        playAndSchedule(mPosition);
     }
 
     @Override
@@ -303,6 +249,52 @@ public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
 //currentListItem = PodcastService.getItemBaseForPodcastItensList(
 //sourceData.getItem().get(0)
 //).getItem();
+
+//@Override
+//public boolean dispatchKeyEvent(KeyEvent event)
+//{
+//  Log.i("soundbrowser", "dispatchKeyEvent");
+//  if(true)
+//      return super.dispatchKeyEvent(event);
+//
+//  int action = event.getAction();
+//  int keyCode = event.getKeyCode();
+//
+//  if (action == KeyEvent.ACTION_UP) {
+//      if (keyCode == KeyEvent.KEYCODE_BACK) 
+//      {
+//          Log.i("soundbrowser", "KEYCODE_BACK pressed");
+//          try {
+//              currentListItem = PodcastService.
+//              	recursiveListUp(currentListItem.get(0)).
+//              		getParent().getParent().getItemLst();
+//          } catch (NullPointerException e) {
+//              e.printStackTrace();
+//              return super.dispatchKeyEvent(event);
+//          }
+//
+//          itemData.clear();
+//          for (Item it : currentListItem)
+//              itemData.add(
+//                  new ItemRow(
+//                      it.getTitle(),
+//                      getResources().getDrawable(R.drawable.ic_launcher)
+//                  )
+//              );
+//          
+//          
+//          adapter.setData(itemData);
+//          adapter.notifyDataSetChanged();
+//
+//          currentPosition = 0;
+//          
+//          return true;
+//      } else
+//          return super.dispatchKeyEvent(event);
+//  }
+//  else
+//      return super.dispatchKeyEvent(event);
+//}
 
 //Log.i(
 //	"soundbrowser", 

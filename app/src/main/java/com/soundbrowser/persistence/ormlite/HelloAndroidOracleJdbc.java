@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
+//import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 
 /**
@@ -64,10 +64,10 @@ public class HelloAndroidOracleJdbc extends Activity
         {
             if (connectionSource == null) {
                 try {
-                    connectionSource = new JdbcConnectionSource(
-                        //"jdbc:h2:/data/data/com.example.helloandroidh2/databases/helloAndroidH2"
-                        dbURL, dbUsername, dbPassword
-                    );
+//                    connectionSource = new JdbcConnectionSource(
+//                        //"jdbc:h2:/data/data/com.example.helloandroidh2/databases/helloAndroidH2"
+//                        dbURL, dbUsername, dbPassword
+//                    );
                     /*
                     try {
                         TableUtils.dropTable(connectionSource, SimpleData.class, true);

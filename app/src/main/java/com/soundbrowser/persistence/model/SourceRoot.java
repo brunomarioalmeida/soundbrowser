@@ -15,20 +15,9 @@ public class SourceRoot {
     @Expose
     private List<Item> item = new ArrayList<Item>();
 
-    /**
-    * 
-    * @return
-    * The item
-    */
     public List<Item> getItem() {
     	return item;
     }
-
-    /**
-    * 
-    * @param item
-    * The item
-    */
     public void setItem(List<Item> item) {
     	this.item = item;
     }

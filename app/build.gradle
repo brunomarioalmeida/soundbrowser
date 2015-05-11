@@ -3,14 +3,19 @@ task startApp(type: Exec, dependsOn: 'installDebug') {
     //commandLine 'adb', 'shell', 'am', 'start', '-n', 'com.soundbrowser/.EntryActivity'
 
     // windows
-    commandLine 'cmd', '/c', 'adb', 'shell', 'am', 'start', '-n', 'com.soundbrowser/.EntryPoint'
+    //commandLine 'cmd', '/c', 'adb', 'shell', 'am', 'start', '-n', 'com.soundbrowser/.EntryPoint'
+    //commandLine 'cmd', '/c', 'adb', 'shell', 'am', 'start', '-n', 'com.soundbrowser/.activities.MyActionBarActivity'
+    //commandLine 'cmd', '/c', 'adb', '-d', 'shell', 'am', 'start', '-D', '-n', 'com.soundbrowser/.activities.AndroidTabAndListView'
+    commandLine 'cmd', '/c', 'adb', 'shell', 'am', 'start', '-n', 'com.soundbrowser/.activities.AndroidTabAndListView'
 }
 
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '21.0.2'
+    //compileSdkVersion 21
+    //buildToolsVersion '21.0.2'
+    compileSdkVersion 19
+    buildToolsVersion '19.1.0'
 
     defaultConfig {
         applicationId "com.soundbrowser"
@@ -24,6 +29,9 @@ android {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+		debug {
+            debuggable true
+        }
     }
     packagingOptions {
         exclude 'META-INF/notice.txt'
@@ -31,6 +39,12 @@ android {
 		exclude 'META-INF/ASL2.0'
 		exclude 'META-INF/LICENSE'
 		exclude 'META-INF/NOTICE'
+    }
+	dexOptions {
+		javaMaxHeapSize "1g"
+	}
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -41,6 +55,10 @@ repositories {
 }
 
 dependencies {
+    compile "com.android.support:support-v4:19.1.+"
+    compile "com.android.support:appcompat-v7:18.0.+"
+    //compile "com.android.support:gridlayout-v7:19.1.+"
+
     compile 'com.google.code.gson:gson:2.3'
     compile 'javax.annotation:jsr250-api:1.0'
     //    compile 'com.j256.ormlite:ormlite-core:4.48'
@@ -50,7 +68,8 @@ dependencies {
 	compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     compile 'com.j256.ormlite:ormlite-android:4.43'
     compile 'com.j256.ormlite:ormlite-jdbc:4.43'
-    compile 'org.xerial:sqlite-jdbc:3.8.7'
+    compile 'com.j256.ormlite:ormlite-core:4.43'
+    //compile 'org.xerial:sqlite-jdbc:3.8.7'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'swipelistview-1.0-20140303.203142-1', ext: 'aar')
     /* compile ('com.fortysevendeg.swipelistview:swipelistview:1.0-SNAPSHOT@aar') {
@@ -58,3 +77,9 @@ dependencies {
                  }*/
     compile files('libs/ojdbc14-1.0.jar')
 }
+
+configurations {
+    all*.exclude group: 'com.android.support', module: 'support-v4'
+    //all*.exclude group: 'com.google.android.gms', module: 'play-services'
+}
+

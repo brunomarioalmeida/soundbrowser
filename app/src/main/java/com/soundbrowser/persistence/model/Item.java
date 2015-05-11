@@ -28,108 +28,36 @@ public class Item extends BaseEntity {
 	@DatabaseField(foreign = true, foreignAutoRefresh=true)
     private Track track;
     
-//	@DatabaseField(foreign = true)
-//	private Item i;
-
-    @Expose
-    private List<Item> item = new ArrayList<Item>();
-    
-	@ForeignCollectionField(eager = true)
-	private ForeignCollection<Item> items; 
-
 	@DatabaseField(foreign = true)
 	private Item parent;
 
+	@ForeignCollectionField(eager = true)
+	private ForeignCollection<Item> items; 
+
+    @Expose
+    private List<Item> itemLst = new ArrayList<Item>();
+    
     @Since(1.1)
     private String fieldToBe;
     
-	public String getFieldToBe() {
-		return fieldToBe;
-	}
-
-	public void setFieldToBe(String fieldToBe) {
-		this.fieldToBe = fieldToBe;
-	}
-
-    /**
-     * 
-     * @return
-     *     The title
-     */
+    // getters & setters
     public String getTitle() {
         return title;
     }
-
-    /**
-     * 
-     * @param title
-     *     The title
-     */
     public void setTitle(String title) {
         this.title = title;
     }
 
-    /**
-     * 
-     * @return
-     *     The item
-     */
-    public List<Item> getItem() 
-    {
-//    	for (Item i : items) 
-//			item.add(i);
-    	
-//    	if(item.isEmpty())
-//    		return item;
-//    	
-//    	if(item.get(0).getParent() == null)
-//        	for (Item child : item) 
-//        		child.setParent(this);
-    	
-    	return item;
-    }
-
-    /**
-     * 
-     * @param item
-     *     The item
-     */
-    public void setItem(List<Item> item) {
-        this.item = item;
-    }
-
-    /**
-     * 
-     * @return
-     *     The pubDate
-     */
     public String getPubDate() {
         return pubDate;
     }
-
-    /**
-     * 
-     * @param pubDate
-     *     The pubDate
-     */
     public void setPubDate(String pubDate) {
         this.pubDate = pubDate;
     }
 
-    /**
-     * 
-     * @return
-     *     The track
-     */
     public Track getTrack() {
         return track;
     }
-
-    /**
-     * 
-     * @param track
-     *     The track
-     */
     public void setTrack(Track track) {
         this.track = track;
     }
@@ -146,5 +74,30 @@ public class Item extends BaseEntity {
 	}
 	public void setItems(ForeignCollection<Item> items) {
 		this.items = items;
+	}
+	
+    public List<Item> getItemLst() 
+    {
+//    	for (Item i : items) 
+//			itemLst.add(i);
+    	
+//    	if(itemLst.isEmpty())
+//    		return itemLst;
+//    	
+//    	if(itemLst.get(0).getParent() == null)
+//        	for (Item child : itemLst) 
+//        		child.setParent(this);
+    	
+    	return itemLst;
+    }
+    public void setItemLst(List<Item> item) {
+        this.itemLst = item;
+    }
+
+    public String getFieldToBe() {
+		return fieldToBe;
+	}
+	public void setFieldToBe(String fieldToBe) {
+		this.fieldToBe = fieldToBe;
 	}
 }

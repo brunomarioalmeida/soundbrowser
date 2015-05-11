@@ -26,81 +26,49 @@ public class Track extends BaseEntity {
     @DatabaseField
     private String duration;
 
-    @Expose
-    private List<Timming> timmings = new ArrayList<Timming>();
-
     @ForeignCollectionField(eager = true)
-	private ForeignCollection<Timming> timmings2; 
+	private ForeignCollection<Timming> timmings; 
     
 	@DatabaseField(foreign = true)
 	private Item item;
 
-	/**
-     * 
-     * @return
-     *     The url
-     */
+    @Expose
+    private List<Timming> timmingsLst = new ArrayList<Timming>();
+
+    // getters & setters
     public String getUrl() {
         return url;
     }
-
-    /**
-     * 
-     * @param url
-     *     The url
-     */
     public void setUrl(String url) {
         this.url = url;
     }
 
-    /**
-     * 
-     * @return
-     *     The size
-     */
     public String getSize() {
         return size;
     }
-
-    /**
-     * 
-     * @param size
-     *     The size
-     */
     public void setSize(String size) {
         this.size = size;
     }
 
-    /**
-     * 
-     * @return
-     *     The duration
-     */
     public String getDuration() {
         return duration;
     }
-
-    /**
-     * 
-     * @param duration
-     *     The duration
-     */
     public void setDuration(String duration) {
         this.duration = duration;
     }
 
-    public List<Timming> getTimmings() {
-    	return timmings;
+    public List<Timming> getTimmingsLst() {
+    	return timmingsLst;
     }
-    public void setTimmings(List<Timming> timmings) {
-    	this.timmings = timmings;
+    public void setTimmingsLst(List<Timming> timmings) {
+    	this.timmingsLst = timmings;
     }
 
-    public ForeignCollection<Timming> getTimmings2() {
-		return timmings2;
+    public ForeignCollection<Timming> getTimmings() {
+		return timmings;
 	}
-	public void setTimmings2(ForeignCollection<Timming> timmings) {
-		this.timmings2 = timmings;
+	public void setTimmings(ForeignCollection<Timming> timmings) {
+		this.timmings = timmings;
 	}
 
 	public Item getItem() {

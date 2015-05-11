@@ -88,13 +88,13 @@ public class MainActivity extends Activity {
 	                
 	                if(currentListItem.get(position).getTrack() == null)
 	                {
-	                    currentListItem = currentListItem.get(position).getItem();
+	                    currentListItem = currentListItem.get(position).getItemLst();
 
 	                    itemData.clear();
 	                    for (Item it : currentListItem)
 	                        itemData.add(
 	                            new ItemRow(
-	                                it.getTitle(),
+	                                it.getTitle(), it.getTrack().getUrl(),
 	                                getResources().getDrawable(R.drawable.ic_launcher)
 	                            )
 	                        );
@@ -137,7 +137,7 @@ public class MainActivity extends Activity {
             // TODO You should clean empty Itens
             currentListItem = PodcastService.getItemBaseForPodcastItensList(
                 sourceData.getItem().get(0)
-            ).getItem();
+            ).getItemLst();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,7 +146,7 @@ public class MainActivity extends Activity {
         for (Item it : currentListItem)
             itemData.add(
                 new ItemRow(
-                    it.getTitle(),
+                    it.getTitle(), it.getTrack().getUrl(),
                     getResources().getDrawable(R.drawable.ic_launcher)
                 )
             );
@@ -196,7 +196,7 @@ public class MainActivity extends Activity {
                 try {
                     currentListItem = PodcastService.
                     	recursiveListUp(currentListItem.get(0)).
-                    		getParent().getParent().getItem();
+                    		getParent().getParent().getItemLst();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                     return super.dispatchKeyEvent(event);
@@ -206,7 +206,7 @@ public class MainActivity extends Activity {
                 for (Item it : currentListItem)
                     itemData.add(
                         new ItemRow(
-                            it.getTitle(),
+                            it.getTitle(), it.getTrack().getUrl(),
                             getResources().getDrawable(R.drawable.ic_launcher)
                         )
                     );
@@ -250,7 +250,7 @@ public class MainActivity extends Activity {
 			playAudio(url);
 
 			Track track = currentListItem.get(position).getTrack();
-    		if(!(track.getTimmings() == null || track.getTimmings().isEmpty()))
+    		if(!(track.getTimmingsLst() == null || track.getTimmingsLst().isEmpty()))
     			new PodcastScheduler().setupAudioSchedules(track, mediaPlayer);
     		
         } catch (Exception e) {

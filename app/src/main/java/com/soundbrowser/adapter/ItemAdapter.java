@@ -11,11 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.soundbrowser.EntryPoint;
 import com.soundbrowser.R;
-import com.soundbrowser.activities.MainActivity;
 
 public class ItemAdapter extends ArrayAdapter<ItemRow> {
 
@@ -59,64 +56,12 @@ public class ItemAdapter extends ArrayAdapter<ItemRow> {
 		holder.itemName.setText(itemdata.getItemName());
 		holder.icon.setImageDrawable(itemdata.getIcon());
 
-		holder.button1.setOnClickListener(
-			new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(
-						context, 
-						"Button 1 Clicked", 
-						Toast.LENGTH_SHORT
-					).show();
-
-                    EntryPoint sct = (EntryPoint)context;
-                    sct.onItemClick(position);
-
-			    	//TODO Make this configurable
-			    	if(true)
-			    		return;
-
-			    	MainActivity activity = (MainActivity)context;
-			    	activity.dReceiver.downloadFile(
-			    		activity.currentListItem.get(activity.currentPosition).getTrack().getUrl()
-			        );
-				}
-			}
-		);
-
-		holder.button2.setOnClickListener(
-			new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(
-						context, 
-						"Button 2 Clicked", 
-						Toast.LENGTH_SHORT
-					).show();
-				}
-			}
-		);
-
-		holder.button3.setOnClickListener(
-			new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(
-						context, 
-						"Button 3 Clicked", 
-						Toast.LENGTH_SHORT
-					).show();
-				}
-			}
-		);
-
 		return row;
 	}
-
+	
     public List<ItemRow> getData() {
         return data;
     }
-
     public void setData(List<ItemRow> data) {
         this.data = data;
     }

@@ -14,21 +14,24 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/swipe_button1"
                 style="@style/MyListButtonAction"
-                android:text="Button 1"/>
+                android:text="Play"
+                android:onClick="clickPlayBtn"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/swipe_button2"
                 style="@style/MyListButtonAction"
-                android:text="Button 2"/>
+                android:text="Download"
+                android:onClick="clickDownloadBtn"/>
 
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/swipe_button3"
                 style="@style/MyListButtonAction"
-                android:text="Button 3"/>
+                android:text="TODO"
+                android:onClick="clickExtraBtn"/>
 
     </LinearLayout>
      <RelativeLayout

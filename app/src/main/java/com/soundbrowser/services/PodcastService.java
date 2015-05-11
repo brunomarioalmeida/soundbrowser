@@ -25,7 +25,7 @@ public class PodcastService {
 	
 	public static com.soundbrowser.persistence.model.Item getItemBaseForPodcastList(com.soundbrowser.persistence.model.Item item) {
 		return getItemBaseForPodcastItensList(item).
-			getParent().getParent().getItem().get(0).getParent();
+			getParent().getParent().getItemLst().get(0).getParent();
 	}
 	
 	public static com.soundbrowser.persistence.model.Item getItemBaseForPodcastItensList(com.soundbrowser.persistence.model.Item item) {
@@ -51,7 +51,7 @@ public class PodcastService {
 
 	public static com.soundbrowser.persistence.model.Item getItemWithUrl(com.soundbrowser.persistence.model.Item item) 
 	{
-		List<com.soundbrowser.persistence.model.Item> itemLst = item.getItem();
+		List<com.soundbrowser.persistence.model.Item> itemLst = item.getItemLst();
 		for (com.soundbrowser.persistence.model.Item child : itemLst) {
 			if(child.getTrack() != null && child.getTrack().getUrl() != null)
 				return child;
@@ -114,7 +114,6 @@ public class PodcastService {
 	  throws SQLException 
 	{
 //		try {
-
 			com.soundbrowser.persistence.model.Item parentItem = daoItem.queryForFirst(
 				daoItem.queryBuilder().
 					selectColumns("id").
@@ -197,7 +196,7 @@ public class PodcastService {
 			whereQuery.prepare()
 		).get(0);
 		// TODO protect for non-existing item
-    	subItemRoot.setItem(remoteItemLst);
+    	subItemRoot.setItemLst(remoteItemLst);
 
     	itemDao.delete(subItemRoot);  // Avoid repeated item in bd
     	recursiveBulkSaveItem(itemDao, trackDao, subItemRoot);
@@ -213,7 +212,7 @@ public class PodcastService {
 			item.getTrack().setItem(item);
 		itemDao.create(item);
 		
-		final List<com.soundbrowser.persistence.model.Item> itens = item.getItem();
+		final List<com.soundbrowser.persistence.model.Item> itens = item.getItemLst();
 		if(itens == null || itens.isEmpty())
 			return;
 		

@@ -2,19 +2,44 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.soundbrowser" >
 
-    <application
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="17" />
+
+	<application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.Styled"
+		>
+		 <!-- android:theme="@style/AppTheme" -->
         <!--activity android:name=".MainActivity" android:label="@string/app_name">
         <activity android:name=".ormlite.HelloAndroidOracleJdbc" android:label="@string/app_name"-->
-        <activity android:name=".EntryPoint" android:label="@string/app_name">
+        <!--activity android:name=".EntryPoint" android:label="@string/app_name"-->
+        <!--activity android:name=".activities.MyActionBarActivity" android:label="@string/app_name"-->
+		<activity
+            android:configChanges="keyboardHidden|orientation"
+            android:name=".activities.AndroidTabAndListView"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+		
+		<!-- Podcast Activity -->
+        <activity android:name=".activities.PodcastActivity" />
+		<!-- Outbox Activity -->
+        <activity android:name=".activities.OutboxActivity" />
+
+		<!--
+			In this example set the Activity to have a split action bar when the device's
+			display is narrow. In ActionBarCompat this is done by setting the
+			'android.support.UI_OPTIONS' metadata field to 'splitActionBarWhenNarrow'.
+		-->
+		<meta-data android:name="android.support.UI_OPTIONS"
+                   android:value="splitActionBarWhenNarrow" />
+
 		<!--receiver android:name=".EntryPoint.VolumeBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.media.VOLUME_CHANGED_ACTION" >
