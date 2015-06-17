@@ -96,11 +96,47 @@ public class PodcastService {
 			// Build root path
 			podcastSrv.recursiveBulkSaveItem(
 				daoItem, daoTrack, 
-				GeneralUtils.buildItemPathToRoot()
+//				GeneralUtils.buildItemPathToRoot()
+				GeneralUtils.buildItemPathToRoot(titleStr)
 			);
 			
 			podcastSrv.saveSubItensToExistingItem(
 				daoItem, daoTrack, titleStr
+			);
+			
+			// retry again once the db as been populated
+			podcastLst = getCurrentList(daoItem, titleStr);
+		}
+		return podcastLst;
+	};	
+	
+	public static List<com.soundbrowser.persistence.model.Item> getCreatePodcastList(
+		Dao<com.soundbrowser.persistence.model.Item, Integer> daoItem, 
+		Dao<com.soundbrowser.persistence.model.Track, ?> daoTrack, 
+		String titleStr, String parentStr) 
+ 	  throws Exception
+	{
+		PodcastService podcastSrv = new PodcastService();
+		
+		List<com.soundbrowser.persistence.model.Item> podcastLst = 
+			getCurrentList(daoItem, titleStr);
+		if(podcastLst == null || podcastLst.isEmpty())
+		{
+			// get parent path
+//			podcastSrv.recursiveBulkSaveItem(
+//				daoItem, daoTrack, 
+//				GeneralUtils.buildItemPathToRoot()
+//			);
+//			com.soundbrowser.persistence.model.Item parentItem = daoItem.
+//				queryForFirst(
+//					daoItem.queryBuilder().
+//						selectColumns("id").
+//						where().eq("title", "Antena 3").
+//					prepare()
+//				);		
+			
+			podcastSrv.saveSubItensToExistingItem(
+				daoItem, daoTrack, titleStr, parentStr
 			);
 			
 			// retry again once the db as been populated
@@ -116,19 +152,29 @@ public class PodcastService {
 //		try {
 			com.soundbrowser.persistence.model.Item parentItem = daoItem.queryForFirst(
 				daoItem.queryBuilder().
-					selectColumns("id").
+					selectColumns("id", "image").
 					where().eq("title", titleStr).
 				prepare()
 			);	
 			if(parentItem == null)
 				return Collections.EMPTY_LIST;
 			
-			return daoItem.query(
+			List<com.soundbrowser.persistence.model.Item> dd = daoItem.query(
 				daoItem.queryBuilder().
 					orderBy("title", true).
 					where().eq("parent_id", parentItem.getId()).
 				prepare()
 			);
+			for (com.soundbrowser.persistence.model.Item item : dd) 
+				item.setImage(parentItem.getImage());
+			
+			return dd;
+//			return daoItem.query(
+//				daoItem.queryBuilder().
+//					orderBy("title", true).
+//					where().eq("parent_id", parentItem.getId()).
+//				prepare()
+//			);
 //			QueryBuilder<com.soundbrowser.persistence.model.Item, Integer> querySpecificPodcast = 
 //				daoItem.queryBuilder();
 //			querySpecificPodcast.selectColumns("id");
@@ -166,7 +212,7 @@ public class PodcastService {
         Log.i("soundbrowser", "Title - " + item.getTitle());
         Log.i("soundbrowser", "Size  - " + item.getItens().length);
 
-        return ItemConverter.convertFromClientItem2ModelItem(
+        return ItemConverter.convertFromClientItens2ModelItens(
         	item.getItens()
         );
 	}
@@ -187,11 +233,38 @@ public class PodcastService {
 			externalUrl + "/items/title/" + itensFromServerTitle, 
         	com.soundbrowser.client.model.Item.class
         );
+		com.soundbrowser.persistence.model.Item subItemRoot = 
+				ItemConverter.convertFromClientItem2ModelItem(item);
 	    List<com.soundbrowser.persistence.model.Item> remoteItemLst = 
-	    	ItemConverter.convertFromClientItem2ModelItem(item.getItens());
+	    	ItemConverter.convertFromClientItens2ModelItens(item.getItens());
+
+		// TODO protect for non-existing item
+    	subItemRoot.setItemLst(remoteItemLst);
+
+    	recursiveBulkSaveItem(itemDao, trackDao, subItemRoot);
+	}
+
+	public void saveSubItensToExistingItem(
+		Dao<com.soundbrowser.persistence.model.Item, Integer> itemDao, 
+		Dao<com.soundbrowser.persistence.model.Track, ?> trackDao, 
+		String itensFromServerTitle, String parentStr) 
+	  throws Exception 
+	{
+		RestTemplate template = new RestTemplate(){{
+			getMessageConverters().add(
+				new MappingJacksonHttpMessageConverter()
+			);
+		}};
+
+		com.soundbrowser.client.model.Item item = template.getForObject(
+			externalUrl + "/items/title/" + itensFromServerTitle, 
+        	com.soundbrowser.client.model.Item.class
+        );
+	    List<com.soundbrowser.persistence.model.Item> remoteItemLst = 
+	    	ItemConverter.convertFromClientItens2ModelItens(item.getItens());
 
 	    Where<com.soundbrowser.persistence.model.Item, ?> whereQuery = 
-	    	itemDao.queryBuilder().where().eq("title", itensFromServerTitle); //rootStr);
+	    	itemDao.queryBuilder().where().eq("title", parentStr); 
 	    com.soundbrowser.persistence.model.Item subItemRoot = itemDao.query(
 			whereQuery.prepare()
 		).get(0);
@@ -208,6 +281,9 @@ public class PodcastService {
 		final com.soundbrowser.persistence.model.Item item) 
 	  throws Exception 
 	{
+		if(item.getTrack() == null && item.getSummary() == null)
+			return;
+		
 		if(item.getTrack() != null)
 			item.getTrack().setItem(item);
 		itemDao.create(item);

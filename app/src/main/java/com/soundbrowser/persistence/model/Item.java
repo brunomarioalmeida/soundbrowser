@@ -25,6 +25,26 @@ public class Item extends BaseEntity {
     private String pubDate;
 
     @Expose
+    @DatabaseField
+    private String image;
+
+    @Expose
+    @DatabaseField
+    private String author;
+
+    @Expose
+    @DatabaseField
+    private String link;
+
+    @Expose
+    @DatabaseField
+    private String summary;
+
+    @Expose
+//    @DatabaseField
+    private Boolean visto;
+
+    @Expose
 	@DatabaseField(foreign = true, foreignAutoRefresh=true)
     private Track track;
     
@@ -76,18 +96,7 @@ public class Item extends BaseEntity {
 		this.items = items;
 	}
 	
-    public List<Item> getItemLst() 
-    {
-//    	for (Item i : items) 
-//			itemLst.add(i);
-    	
-//    	if(itemLst.isEmpty())
-//    		return itemLst;
-//    	
-//    	if(itemLst.get(0).getParent() == null)
-//        	for (Item child : itemLst) 
-//        		child.setParent(this);
-    	
+    public List<Item> getItemLst() {
     	return itemLst;
     }
     public void setItemLst(List<Item> item) {
@@ -99,5 +108,36 @@ public class Item extends BaseEntity {
 	}
 	public void setFieldToBe(String fieldToBe) {
 		this.fieldToBe = fieldToBe;
+	}
+	
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public String getAuthor() {
+		return author;
+	}
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	public String getLink() {
+		return link;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
+	public String getSummary() {
+		return summary;
+	}
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+	public Boolean getVisto() {
+		return visto;
+	}
+	public void setVisto(Boolean visto) {
+		this.visto = visto;
 	}
 }

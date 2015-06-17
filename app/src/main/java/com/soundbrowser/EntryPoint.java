@@ -1,6 +1,5 @@
 package com.soundbrowser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.DownloadManager;
@@ -19,7 +18,6 @@ import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.soundbrowser.adapter.ItemAdapter;
-import com.soundbrowser.adapter.ItemRow;
 import com.soundbrowser.persistence.model.Item;
 import com.soundbrowser.persistence.model.Track;
 import com.soundbrowser.persistence.ormlite.DatabaseHelper;
@@ -32,7 +30,7 @@ public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
 
 	SwipeListView swipelistview;
 	ItemAdapter adapter;
-	List<ItemRow> itemData;
+//	List<ItemRow> itemData;
     public List<Item> currentListItem;
 	
     private MediaPlayer mediaPlayer;
@@ -50,8 +48,8 @@ public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
         
         setContentView(R.layout.activity_main);
 
-        itemData = new ArrayList<ItemRow>();
-        adapter = new ItemAdapter(this, R.layout.custom_row, itemData);
+//        itemData = new ArrayList<ItemRow>();
+//        adapter = new ItemAdapter(this, R.layout.custom_row, itemData);
 
         swipelistview = (SwipeListView)findViewById(R.id.example_swipe_lv_list);
         swipelistview.setSwipeListViewListener(
@@ -93,13 +91,13 @@ public class EntryPoint extends OrmLiteBaseActivity<DatabaseHelper> {
 			e.printStackTrace();
 		}
 
-        for (Item it : currentListItem)
-            itemData.add(
-                new ItemRow(
-                    it.getTitle(), it.getTrack().getUrl(),
-                    getResources().getDrawable(R.drawable.ic_launcher)
-                )
-            );
+//        for (Item it : currentListItem)
+//            itemData.add(
+//                new ItemRow(
+//                    it.getTitle(), it.getTrack().getUrl(),
+//                    getResources().getDrawable(R.drawable.ic_launcher)
+//                )
+//            );
         adapter.notifyDataSetChanged();
         
 //        mediaPlayer = new MediaPlayer();

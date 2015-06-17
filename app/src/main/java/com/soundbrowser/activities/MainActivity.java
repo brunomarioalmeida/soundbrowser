@@ -2,7 +2,6 @@ package com.soundbrowser.activities;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -23,7 +22,6 @@ import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.soundbrowser.R;
 import com.soundbrowser.adapter.ItemAdapter;
-import com.soundbrowser.adapter.ItemRow;
 import com.soundbrowser.converters.JsonToObjectConverter;
 import com.soundbrowser.persistence.model.Item;
 import com.soundbrowser.persistence.model.SourceRoot;
@@ -36,7 +34,7 @@ public class MainActivity extends Activity {
 
 	SwipeListView swipelistview;
 	ItemAdapter adapter;
-	List<ItemRow> itemData;
+//	List<ItemRow> itemData;
 	
     private MediaPlayer mediaPlayer;
     public List<Item> currentListItem;
@@ -53,8 +51,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         swipelistview = (SwipeListView)findViewById(R.id.example_swipe_lv_list); 
-        itemData = new ArrayList<ItemRow>();
-        adapter = new ItemAdapter(this, R.layout.custom_row, itemData);
+//        itemData = new ArrayList<ItemRow>();
+//        adapter = new ItemAdapter(this, R.layout.custom_row, itemData);
 
         swipelistview.setSwipeListViewListener(
         	new BaseSwipeListViewListener() {
@@ -90,15 +88,15 @@ public class MainActivity extends Activity {
 	                {
 	                    currentListItem = currentListItem.get(position).getItemLst();
 
-	                    itemData.clear();
-	                    for (Item it : currentListItem)
-	                        itemData.add(
-	                            new ItemRow(
-	                                it.getTitle(), it.getTrack().getUrl(),
-	                                getResources().getDrawable(R.drawable.ic_launcher)
-	                            )
-	                        );
-	                    adapter.setData(itemData);
+//	                    itemData.clear();
+//	                    for (Item it : currentListItem)
+//	                        itemData.add(
+//	                            new ItemRow(
+//	                                it.getTitle(), it.getTrack().getUrl(),
+//	                                getResources().getDrawable(R.drawable.ic_launcher)
+//	                            )
+//	                        );
+//	                    adapter.setData(itemData);
 	                    adapter.notifyDataSetChanged();
 
 	                    currentPosition = 0;
@@ -143,13 +141,13 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
 
-        for (Item it : currentListItem)
-            itemData.add(
-                new ItemRow(
-                    it.getTitle(), it.getTrack().getUrl(),
-                    getResources().getDrawable(R.drawable.ic_launcher)
-                )
-            );
+//        for (Item it : currentListItem)
+//            itemData.add(
+//                new ItemRow(
+//                    it.getTitle(), it.getTrack().getUrl(),
+//                    getResources().getDrawable(R.drawable.ic_launcher)
+//                )
+//            );
         adapter.notifyDataSetChanged();
         
         mediaPlayer = new MediaPlayer();
@@ -202,17 +200,17 @@ public class MainActivity extends Activity {
                     return super.dispatchKeyEvent(event);
                 }
 
-                itemData.clear();
-                for (Item it : currentListItem)
-                    itemData.add(
-                        new ItemRow(
-                            it.getTitle(), it.getTrack().getUrl(),
-                            getResources().getDrawable(R.drawable.ic_launcher)
-                        )
-                    );
-                
-                
-                adapter.setData(itemData);
+//                itemData.clear();
+//                for (Item it : currentListItem)
+//                    itemData.add(
+//                        new ItemRow(
+//                            it.getTitle(), it.getTrack().getUrl(),
+//                            getResources().getDrawable(R.drawable.ic_launcher)
+//                        )
+//                    );
+//                
+//                
+//                adapter.setData(itemData);
                 adapter.notifyDataSetChanged();
 
                 currentPosition = 0;

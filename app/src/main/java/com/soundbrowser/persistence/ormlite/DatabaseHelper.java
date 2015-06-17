@@ -43,8 +43,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             Environment.getExternalStoragePublicDirectory(".").		// /storage/sdcard0/.
                 getAbsolutePath() + File.separator + DATABASE_NAME,
             null,
-            DATABASE_VERSION,
-            R.raw.ormlite_config
+            DATABASE_VERSION
+            //, R.raw.ormlite_config
         );
     }
 

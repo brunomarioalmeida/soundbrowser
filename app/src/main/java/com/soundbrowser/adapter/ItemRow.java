@@ -7,7 +7,15 @@ public class ItemRow {
 	String itemName;
 	Drawable icon;
     String url;
+    String imageUrl;
 
+	public ItemRow(String itemName, String url, String imageUrl) {
+		super();
+		this.itemName = itemName;
+		this.imageUrl = imageUrl;
+		this.url = url;
+	}
+	
 	public ItemRow(String itemName, String url, Drawable icon) {
 		super();
 		this.itemName = itemName;
@@ -34,5 +42,12 @@ public class ItemRow {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 }

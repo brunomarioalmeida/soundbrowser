@@ -5,7 +5,7 @@ package com.soundbrowser.client.model;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Track {
+public class Track extends BaseBean {
 
     private String url;
     private int sizeTrack;

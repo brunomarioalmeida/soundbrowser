@@ -50,6 +50,7 @@
         <item name="android:layout_height">64dp</item>
         <item name="android:scaleGravity">fill</item>
         <item name="android:layout_marginRight">8dp</item>
+<!--         <item name="android:background">@drawable/img</item> -->
     </style>
 
     <style name="MyListTitle">

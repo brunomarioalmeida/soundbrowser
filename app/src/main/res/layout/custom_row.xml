@@ -9,24 +9,30 @@
             style="@style/MyListBackContent"
             >
 
-        <Button
-                android:layout_width="wrap_content"
+        <Button android:background="@drawable/rounded_corner"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/swipe_button1"
                 style="@style/MyListButtonAction"
                 android:text="Play"
                 android:onClick="clickPlayBtn"/>
+            <!--
+                    android:layout_width="wrap_content"
+            -->
 
-        <Button
-                android:layout_width="wrap_content"
+        <Button android:background="@drawable/rounded_corner"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
                 android:id="@+id/swipe_button2"
                 style="@style/MyListButtonAction"
                 android:text="Download"
                 android:onClick="clickDownloadBtn"/>
 
-        <Button
-                android:layout_width="wrap_content"
+        <Button android:background="@drawable/rounded_corner"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/swipe_button3"
                 style="@style/MyListButtonAction"
@@ -40,14 +46,31 @@
             android:tag="front"
             style="@style/MyListFrontContent">
 
-        <ImageView
+        <!--  ImageView
                 style="@style/MyListImage"
                 android:id="@+id/example_image"/>
+	    <com.soundbrowser.controller.RoundedCornerNetworkImageView
+	        android:id="@+id/imageThumbnail2"
+	        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginRight="10dp"
+        />
+	    <com.android.volley.toolbox.NetworkImageView
+	        android:id="@+id/imageThumbnail"
+	        style="@style/MyListImage"/-->
+	    <com.soundbrowser.controller.UserAvatar
+	        android:id="@+id/imageThumbnail2"
+	        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginRight="10dp"
+        />
+        <!--  app:border_width="2dp"            
+        app:border_color="#ffffff" --> 
 
         <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/example_image"
+                android:layout_toRightOf="@id/imageThumbnail2"
                 style="@style/MyListTitle"
                 android:id="@+id/example_itemname"/>
 

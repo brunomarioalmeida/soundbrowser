@@ -1,25 +1,27 @@
 package com.soundbrowser.activities;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.DownloadManager;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources.NotFoundException;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
@@ -27,19 +29,20 @@ import com.fortysevendeg.swipelistview.SwipeListView;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.soundbrowser.R;
 import com.soundbrowser.adapter.ItemAdapter;
-import com.soundbrowser.adapter.ItemRow;
 import com.soundbrowser.persistence.model.Item;
 import com.soundbrowser.persistence.model.Track;
 import com.soundbrowser.persistence.ormlite.DatabaseHelper;
 import com.soundbrowser.receivers.DownloadBroadcastReceiver;
 import com.soundbrowser.services.PodcastService;
 
-public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> { 
+public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> 
+//implements OnFocusChangeListener 
+{ 
 
 	// Progress Dialog
-    private ProgressDialog pDialog;
+//    private ProgressDialog pDialog;
  
-    List<ItemRow> itemData;
+    List<Item> currentListItem;
     int currentPosition;
     
     private MediaPlayer mediaPlayer;
@@ -48,19 +51,60 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     private DownloadBroadcastReceiver downloadBReceiver;
     
     LoadItens loadItens;
+    AutoCompleteTextView textView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
+//    if(true)
+//    	return;
         setContentView(R.layout.inbox_list);
          
+        // Get a reference to the AutoCompleteTextView in the layout
+        textView = (AutoCompleteTextView) findViewById(R.id.autocomplete_country);
+//    	textView.setOnFocusChangeListener(this);
+        // Get the string array
+        String[] countries = getResources().getStringArray(R.array.countries_array);
+        // Create the adapter and set it to the AutoCompleteTextView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+            this, android.R.layout.simple_list_item_1, countries
+        );
+        textView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) 
+            {
+//            	Animation animation = new TranslateAnimation(0,0,0,1000);
+//            	animation.setDuration(3000);
+//            	textView.startAnimation(animation);
+            	textView.setVisibility(View.GONE);
+            	
+                String selection = (String)parent.getItemAtPosition(position);
+                new LoadItens().execute(selection);
+//                Toast.makeText(PodcastActivity.this, selection, Toast.LENGTH_SHORT).show();
+            }
+        });
+        textView.setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) 
+			{
+				 if (keyCode == KeyEvent.KEYCODE_ENTER)
+			     {
+//	                String selection = (String)parent.getItemAtPosition(position);
+					 new LoadItens().execute("Antena 3");
+					 return true;
+			     }
+				 return false;
+			}
+		});
+        textView.setAdapter(adapter);
+
         // Hashmap for ListView
-        itemData = new ArrayList<ItemRow>();
+        currentListItem = new ArrayList<Item>();
   
         // Loading Itens in Background Thread
         loadItens = new LoadItens();
-        loadItens.execute();
+        loadItens.execute("PROVA ORAL");
+//        loadItens.execute("Antena 3");
         
         downloadBReceiver = new DownloadBroadcastReceiver(
     		(DownloadManager) getSystemService(DOWNLOAD_SERVICE)
@@ -89,14 +133,17 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
 	private void playLocalOrExternalAudio() 
 	{
-		String url = itemData.get(currentPosition).getUrl();
+		String url = "";
+		if(currentListItem.get(currentPosition).getTrack() != null)
+			url = currentListItem.get(currentPosition).getTrack().getUrl();
+
 		String localUrl = 
         	Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + 
         	Environment.DIRECTORY_DOWNLOADS + "/" + 
         	url.substring(url.indexOf("wavrss"));
-        File f = new File(localUrl);
+        
+		File f = new File(localUrl);
 		playAudio(f.exists()?localUrl:url);
-//		playAudio(itemData.get(currentPosition).getUrl());
 	}
 
 	public void clickDownloadBtn(View view) {
@@ -106,7 +153,10 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 			Toast.LENGTH_SHORT
 		).show();
 
-		downloadBReceiver.downloadFile(itemData.get(currentPosition).getUrl());
+		if(currentListItem.get(currentPosition).getTrack() != null)
+			downloadBReceiver.downloadFile(
+				currentListItem.get(currentPosition).getTrack().getUrl()
+			);
 	}
 
 	public void clickExtraBtn(View view) {
@@ -191,22 +241,51 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     	                swipelistview.openAnimate(position); //when you touch front view it will open
 //    	                playAndSchedule(position);
     	                currentPosition = position;
+
+                        SharedPreferences preferences=getSharedPreferences("session", getApplicationContext().MODE_PRIVATE);
+                        String searchStr=preferences.getString("searchStr",null);
+                        Toast.makeText(PodcastActivity.this, searchStr, Toast.LENGTH_SHORT).show();
     	            }
     	
     	            @Override
     	            public void onClickBackView(int position) {
-    	                Log.d("soundbrowser", String.format("onClickBackView %d", position));
+    	                Log.i("soundbrowser", String.format("onClickBackView %d", position));
     	                swipelistview.closeAnimate(position);//when you touch back view it will close
     	                currentPosition = 0;
     	            }
+    	            
+    	            public void onFirstListItem() {
+    	                Log.i("soundbrowser", String.format("onFirstListItem"));
+    	                
+//    	                Animation animation = new TranslateAnimation(0,0,0,1000);
+//    	                animation.setDuration(3000);
+//    	                textView.startAnimation(animation);
+    	                textView.setVisibility(View.VISIBLE);
+    	            };
+    	            
+    	            public void onListChanged() {
+    	                Log.i("soundbrowser", String.format("onListChanged"));
+    	            };
+
+    	            public void onChoiceChanged(int position, boolean selected) {
+    	                Log.i("soundbrowser", String.format("onChoiceChanged %d %b", position, selected));
+    	            };
+    	            
+    	            public void onLastListItem() {
+    	                Log.i("soundbrowser", String.format("onLastListItem"));
+    	            };
+    	            
+    	            public void onMove(int position, float x) {
+    	                Log.i("soundbrowser", String.format("onMove %d %f", position, x));
+    	            };
             	}
             );
 
-            pDialog = new ProgressDialog(PodcastActivity.this);
-            pDialog.setMessage("Loading Itens ...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
+//            pDialog = new ProgressDialog(PodcastActivity.this);
+//            pDialog.setMessage("Loading Itens ...");
+//            pDialog.setIndeterminate(false);
+//            pDialog.setCancelable(false);
+//            pDialog.show();
         }
  
         /**
@@ -214,42 +293,18 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> {
          * */
         protected String doInBackground(String... args) 
         {
-            List<Item> currentListItem = null;
     		try {
     			currentListItem = PodcastService.getCreatePodcastList(
     				getHelper().getItemDao(), 
     				getHelper().getDao(Track.class), 
-    				"PROVA ORAL"
+    				args[0]
     			);
-    		} catch (Exception e) {
+            } catch (Exception e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-
-            for (Item it : currentListItem)
-				try {
-					itemData.add(
-					    new ItemRow(
-//                        it.getTitle().substring(10),	//TODO check first if it has the date in the title
-//                    	StringEscapeUtils.unescapeHtml4(it.getTitle().substring(10)),
-//					    	new String(it.getTitle().substring(10).getBytes(), "UTF-8"),
-					    	URLDecoder.decode(it.getTitle().substring(10), "UTF-8"),
-					    	it.getTrack().getUrl(),
-					    	getResources().getDrawable(R.drawable.ic_launcher)
-					    )
-					);
-//		            new String(nodevalue.getBytes(), "UTF-8");
-//		            StringEscapeUtils.unescapeHtml(
-//		            	new String(ch, start, length).trim()
-//		            );
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            return null;
+    		
+   			return null;
         }
  
         /**
@@ -258,16 +313,16 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         protected void onPostExecute(String file_url) 
         {
             // dismiss the dialog after getting all products
-            pDialog.dismiss();
+//            pDialog.dismiss();
             
             // updating UI from Background Thread
             runOnUiThread(new Runnable() {
                 public void run() {
                     ItemAdapter adapter = new ItemAdapter(
-                    	PodcastActivity.this, R.layout.custom_row, itemData
+                    	PodcastActivity.this, R.layout.custom_row, currentListItem
                     );
                     swipelistview.setAdapter(adapter);
-//                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 }
             });
         }
@@ -303,8 +358,8 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             	
     	        // Border Safety
     	        if (currentPosition < 0) currentPosition = 0;
-    	        if (currentPosition >= itemData.size())
-    	        	currentPosition = itemData.size() - 1;
+    	        if (currentPosition >= currentListItem.size())
+    	        	currentPosition = currentListItem.size() - 1;
 
     	        Log.i("soundbrowser", 
 	    			"volume changed saw by broadcast volumeBReceiver -> (new:" + volume + ") - (old:" + oldVolume + ")" +
@@ -317,4 +372,19 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             }
     	}
     }
+
+//	@Override
+//	public void onFocusChange(View v, boolean hasFocus) {
+//		Log.i("soundbrowser", "onFocusChange? : " + v.getClass().getCanonicalName() + " - " + hasFocus);
+////		if(textView.requestFocus()) 
+////		    getWindow().setSoftInputMode(
+////		    	WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
+////		    );
+//		textView.requestFocus();
+//		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+//	}
 }
+
+//StringEscapeUtils.unescapeHtml4(it.getTitle().substring(10)),
+//URLDecoder.decode(it.getTitle().substring(10), "UTF-8"),

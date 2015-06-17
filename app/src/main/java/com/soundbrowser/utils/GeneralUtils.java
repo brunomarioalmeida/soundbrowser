@@ -33,6 +33,15 @@ public class GeneralUtils {
         return (60*minutos + segundos)*1000;
     }
     
+	public static com.soundbrowser.persistence.model.Item buildItemPathToRoot(String parentTitle) 
+	{
+		com.soundbrowser.persistence.model.Item parentItem = 
+			new com.soundbrowser.persistence.model.Item();
+		parentItem.setTitle(parentTitle);
+		
+		return parentItem;
+	}
+	
 	public static com.soundbrowser.persistence.model.Item buildItemPathToRoot() 
 	{
 		final com.soundbrowser.persistence.model.Item provaOralItem = 

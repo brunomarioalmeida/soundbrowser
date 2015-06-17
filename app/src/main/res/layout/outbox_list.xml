@@ -3,10 +3,25 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
- 
-    <ListView
-        android:id="@android:id/list"
+
+    <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/autocomplete_country"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
- 
+    <!--ListView
+        android:id="@+id/test"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" /-->
+ <!--  ImageView android:id="@+id/sss"
+ android:src="@drawable/i_1070_7907_60189"
+        android:layout_height="235px"
+        android:layout_width="300px"
+        android:layout_margin="10dip"/-->
+<ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_row_selector" />             
 </LinearLayout>

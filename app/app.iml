@@ -84,15 +84,17 @@
     <orderEntry type="library" exported="" name="ormlite-jdbc-4.43" level="project" />
     <orderEntry type="library" exported="" name="nineoldandroids-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="ojdbc14-1.0" level="project" />
-    <orderEntry type="library" exported="" name="ormlite-core-4.43" level="project" />
     <orderEntry type="library" exported="" name="spring-android-rest-template-1.0.1.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="ormlite-core-4.43" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-asl-1.9.13" level="project" />
     <orderEntry type="library" exported="" name="swipelistview-1.0-20140303.203142-1" level="project" />
+    <orderEntry type="library" exported="" name="volley-1.0" level="project" />
     <orderEntry type="library" exported="" name="jackson-mapper-asl-1.9.13" level="project" />
     <orderEntry type="library" exported="" name="spring-android-core-1.0.1.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-18.0.0" level="project" />
     <orderEntry type="library" exported="" name="ormlite-android-4.43" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3" level="project" />
+    <orderEntry type="module" module-name="LicenseVerificationLibrary" exported="" />
   </component>
 </module>
 

@@ -52,6 +52,11 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+	mavenCentral()
+	maven {
+        url 'https://github.com/Goddchen/mvn-repo/raw/master/'
+		//url 'http://mvnrepository.com/artifact'
+    }
 }
 
 dependencies {
@@ -63,19 +68,21 @@ dependencies {
     compile 'javax.annotation:jsr250-api:1.0'
     //    compile 'com.j256.ormlite:ormlite-core:4.48'
     //    compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'com.j256.ormlite:ormlite-core:4.43'
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
 	compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     compile 'com.j256.ormlite:ormlite-android:4.43'
     compile 'com.j256.ormlite:ormlite-jdbc:4.43'
     compile 'com.j256.ormlite:ormlite-core:4.43'
     //compile 'org.xerial:sqlite-jdbc:3.8.7'
+	compile 'com.android:volley:1.+'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'swipelistview-1.0-20140303.203142-1', ext: 'aar')
     /* compile ('com.fortysevendeg.swipelistview:swipelistview:1.0-SNAPSHOT@aar') {
                     transitive = true
                  }*/
     compile files('libs/ojdbc14-1.0.jar')
+	compile project(':LicenseVerificationLibrary')
+
 }
 
 configurations {
