@@ -1,6 +1,7 @@
 package com.soundbrowser.activities;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -44,6 +44,7 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper>
  
     List<Item> currentListItem;
     int currentPosition;
+    String previousTitle;
     
     private MediaPlayer mediaPlayer;
     
@@ -56,12 +57,45 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper>
     @Override
     public void onCreate(Bundle savedInstanceState) 
     {
-        super.onCreate(savedInstanceState);
+
+    	super.onCreate(savedInstanceState);
 //    if(true)
 //    	return;
         setContentView(R.layout.inbox_list);
+        
+//        AppController.getInstance().getRequestQueue().getCache().clear();
+//        if(true)
+//        	return;
          
-        // Get a reference to the AutoCompleteTextView in the layout
+//        buildAutocompleteWidget();
+
+        // Hashmap for ListView
+        currentListItem = new ArrayList<Item>();
+  
+        // Loading Itens in Background Thread
+        loadItens = new LoadItens();
+//        loadItens.execute("Mixórdia de Temáticas");
+//        loadItens.execute("PROVA ORAL");
+//        loadItens.execute("Antena 3");
+        loadItens.execute("Geral");
+        
+        downloadBReceiver = new DownloadBroadcastReceiver(
+    		(DownloadManager) getSystemService(DOWNLOAD_SERVICE)
+    	);
+        registerReceiver(
+        	downloadBReceiver, 
+        	new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+        );
+        volumeBReceiver = new PodcastActivity.VolumeBroadcastReceiver();
+        registerReceiver(
+        	volumeBReceiver, 
+        	new IntentFilter("android.media.VOLUME_CHANGED_ACTION")
+        );
+    }
+
+	private void buildAutocompleteWidget() 
+	{
+		// Get a reference to the AutoCompleteTextView in the layout
         textView = (AutoCompleteTextView) findViewById(R.id.autocomplete_country);
 //    	textView.setOnFocusChangeListener(this);
         // Get the string array
@@ -97,30 +131,9 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper>
 			}
 		});
         textView.setAdapter(adapter);
-
-        // Hashmap for ListView
-        currentListItem = new ArrayList<Item>();
-  
-        // Loading Itens in Background Thread
-        loadItens = new LoadItens();
-        loadItens.execute("PROVA ORAL");
-//        loadItens.execute("Antena 3");
-        
-        downloadBReceiver = new DownloadBroadcastReceiver(
-    		(DownloadManager) getSystemService(DOWNLOAD_SERVICE)
-    	);
-        registerReceiver(
-        	downloadBReceiver, 
-        	new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-        );
-        volumeBReceiver = new PodcastActivity.VolumeBroadcastReceiver();
-        registerReceiver(
-        	volumeBReceiver, 
-        	new IntentFilter("android.media.VOLUME_CHANGED_ACTION")
-        );
-    }
+	}
  
-	public void clickPlayBtn(View view) {
+    public void clickPlayBtn(View view) {
 		Toast.makeText(
 			this, 
 			"Going to play podcast ...", 
@@ -137,11 +150,17 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper>
 		if(currentListItem.get(currentPosition).getTrack() != null)
 			url = currentListItem.get(currentPosition).getTrack().getUrl();
 
+		String subPath = "";
+		try {
+			subPath = url.substring(url.indexOf("wavrss"));
+		} catch (StringIndexOutOfBoundsException e) {
+			subPath = url.substring(url.indexOf("mixordiadetematicas"));
+		}
+        
 		String localUrl = 
         	Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + 
-        	Environment.DIRECTORY_DOWNLOADS + "/" + 
-        	url.substring(url.indexOf("wavrss"));
-        
+        	Environment.DIRECTORY_DOWNLOADS + "/" + subPath;
+		
 		File f = new File(localUrl);
 		playAudio(f.exists()?localUrl:url);
 	}
@@ -159,12 +178,15 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper>
 			);
 	}
 
-	public void clickExtraBtn(View view) {
+	public void clickExtraBtn(View view) throws SQLException {
 		Toast.makeText(
 			this, 
 			"Extra feature to be ...", 
 			Toast.LENGTH_SHORT
 		).show();
+		
+		currentListItem.get(currentPosition).setVisto(true);
+		getHelper().getItemDao().update(currentListItem.get(currentPosition));
 	}
 	
 	@Override
@@ -175,6 +197,19 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper>
 		finish();
 	}
 	
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  
+    {
+        if(previousTitle != null) {
+	    	if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	        	new LoadItens().execute(previousTitle);
+		    	previousTitle = null;
+	            return true;
+	        }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
     @Override
     protected void onDestroy() 
     {
@@ -235,23 +270,39 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper>
             swipelistview.setSwipeListViewListener(
             	new BaseSwipeListViewListener() {
     	            @Override
-    	            public void onClickFrontView(int position) {
+    	            public void onClickFrontView(int position) 
+    	            {
     	                Log.d("soundbrowser", String.format("onClickFrontView %d", position));
-    	                swipelistview.closeOpenedItems();
-    	                swipelistview.openAnimate(position); //when you touch front view it will open
-//    	                playAndSchedule(position);
     	                currentPosition = position;
 
-                        SharedPreferences preferences=getSharedPreferences("session", getApplicationContext().MODE_PRIVATE);
-                        String searchStr=preferences.getString("searchStr",null);
-                        Toast.makeText(PodcastActivity.this, searchStr, Toast.LENGTH_SHORT).show();
+    	        		if (currentListItem.get(currentPosition).getTrack().getUrl() == null)
+    	        		{
+    	        			previousTitle = currentListItem.get(currentPosition).getParent().getTitle();
+    	        			new LoadItens().execute(
+    	        				currentListItem.get(currentPosition).getTitle()
+    	        			);
+    	        		} else {
+        	                swipelistview.closeOpenedItems();
+        	                swipelistview.openAnimate(position); //when you touch front view it will open
+//        	                playAndSchedule(position);
+    	        		}
+
+//    	                SharedPreferences preferences=getSharedPreferences("session", getApplicationContext().MODE_PRIVATE);
+//                        String searchStr=preferences.getString("searchStr",null);
+//                        Toast.makeText(PodcastActivity.this, searchStr, Toast.LENGTH_SHORT).show();
     	            }
     	
     	            @Override
     	            public void onClickBackView(int position) {
     	                Log.i("soundbrowser", String.format("onClickBackView %d", position));
-    	                swipelistview.closeAnimate(position);//when you touch back view it will close
     	                currentPosition = 0;
+    	                swipelistview.closeAnimate(position);//when you touch back view it will close
+//    	                new LoadItens().execute(
+//    	                	// TODO Preencher o title do parent em termos de BD
+////	        				currentListItem.get(currentPosition).getParent().getTitle()
+//    	                	previousTitle
+////	        				"Mixórdia de Temáticas"
+//	        			);
     	            }
     	            
     	            public void onFirstListItem() {
@@ -260,7 +311,7 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper>
 //    	                Animation animation = new TranslateAnimation(0,0,0,1000);
 //    	                animation.setDuration(3000);
 //    	                textView.startAnimation(animation);
-    	                textView.setVisibility(View.VISIBLE);
+//    	                textView.setVisibility(View.VISIBLE);
     	            };
     	            
     	            public void onListChanged() {
@@ -293,6 +344,14 @@ public class PodcastActivity extends OrmLiteBaseActivity<DatabaseHelper>
          * */
         protected String doInBackground(String... args) 
         {
+//    		try {
+//    			new PodcastBundleService().buildAndStorePortugueseSamplePodcasts(
+//    				true, getHelper().getItemDao(), getHelper().getTrackDao()
+//    			);
+//    		} catch (SQLException e) {
+//    			// TODO Auto-generated catch block
+//    			e.printStackTrace();
+//    		}
     		try {
     			currentListItem = PodcastService.getCreatePodcastList(
     				getHelper().getItemDao(), 

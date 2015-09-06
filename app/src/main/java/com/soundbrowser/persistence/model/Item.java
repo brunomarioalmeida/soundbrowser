@@ -41,7 +41,7 @@ public class Item extends BaseEntity {
     private String summary;
 
     @Expose
-//    @DatabaseField
+    @DatabaseField
     private Boolean visto;
 
     @Expose

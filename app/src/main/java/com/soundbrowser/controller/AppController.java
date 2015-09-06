@@ -8,7 +8,8 @@ import org.apache.http.HttpStatus;
 
 import android.app.Application;
 import android.content.Context;
-import android.telephony.TelephonyManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -53,8 +54,7 @@ public class AppController extends Application {
     }
     
    // Default maximum disk usage in bytes
-//    private static final int DEFAULT_DISK_USAGE_BYTES = 25 * 1024 * 1024;
-    private static final int DEFAULT_DISK_USAGE_BYTES = 16 * 1024 * 1024;
+    private static final int DEFAULT_DISK_USAGE_BYTES = 25 * 1024 * 1024;
 
     // Default cache folder name
     private static final String DEFAULT_CACHE_DIR = "volley";
@@ -97,12 +97,16 @@ public class AppController extends Application {
 		public NetworkResponse performRequest(Request<?> request)
 		  throws VolleyError 
 		{
-			if(true)
-			  return super.performRequest(request);
+//			if(true)
+//			  return super.performRequest(request);
+			
+			NetworkInfo activeNetwork = ((ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+			boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-			TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//			TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 //			if (!ConnectivityUtils.isNetworkEnabled(AppController.getInstance().getApplicationContext()) && request instanceof ImageRequest) {
-			if (tm .getDataState() != tm .DATA_CONNECTED && request instanceof ImageRequest) 
+//			if (false && tm .getDataState() != tm .DATA_CONNECTED && request instanceof ImageRequest) 
+			if (!isConnected && request instanceof ImageRequest) 
 			{
 				Map<String, String> responseHeaders = Collections.emptyMap();
                 VolleyLog.e("Cached response", "No Network Connectivity for Url=", request.getUrl());

@@ -31,6 +31,11 @@ public class ItemConverter {
 			localItem.getTrack().setItem(localItem);
 		}
 		
+		com.soundbrowser.client.model.Item[] childItens = item.getItens();
+		if(childItens != null)
+			for (com.soundbrowser.client.model.Item childItem : childItens) 
+				localItem.getItemLst().add(convertFromClientItem2ModelItem(childItem));
+		
 		return localItem;
 	}
 	

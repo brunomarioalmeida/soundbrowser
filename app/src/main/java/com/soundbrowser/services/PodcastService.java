@@ -13,15 +13,15 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.Where;
-import com.soundbrowser.client.model.Item;
 import com.soundbrowser.converters.ItemConverter;
 import com.soundbrowser.utils.GeneralUtils;
 
 public class PodcastService {
 
 //	private static String externalUrl = "http://192.168.1.80:8080";
-	private static String externalUrl = "http://2.primal-bonbon-627.appspot.com";
+//	private static String externalUrl = "http://2.primal-bonbon-627.appspot.com";
 //	private static String externalUrl = "http://localhost:8080";
+	private static String externalUrl = "http://192.168.1.101:8080";
 	
 	public static com.soundbrowser.persistence.model.Item getItemBaseForPodcastList(com.soundbrowser.persistence.model.Item item) {
 		return getItemBaseForPodcastItensList(item).
@@ -97,7 +97,8 @@ public class PodcastService {
 			podcastSrv.recursiveBulkSaveItem(
 				daoItem, daoTrack, 
 //				GeneralUtils.buildItemPathToRoot()
-				GeneralUtils.buildItemPathToRoot(titleStr)
+//				GeneralUtils.buildItemPathToRoot(titleStr)
+				GeneralUtils.buildItemPathToRoot(new String[] {"Geral", titleStr})
 			);
 			
 			podcastSrv.saveSubItensToExistingItem(
@@ -152,23 +153,30 @@ public class PodcastService {
 //		try {
 			com.soundbrowser.persistence.model.Item parentItem = daoItem.queryForFirst(
 				daoItem.queryBuilder().
-					selectColumns("id", "image").
+					selectColumns("id", "image", "title").
 					where().eq("title", titleStr).
 				prepare()
 			);	
 			if(parentItem == null)
 				return Collections.EMPTY_LIST;
 			
-			List<com.soundbrowser.persistence.model.Item> dd = daoItem.query(
+			List<com.soundbrowser.persistence.model.Item> fetchedItens = daoItem.query(
 				daoItem.queryBuilder().
-					orderBy("title", true).
+					orderBy("pubDate", false).
 					where().eq("parent_id", parentItem.getId()).
+					and().isNull("visto").
 				prepare()
 			);
-			for (com.soundbrowser.persistence.model.Item item : dd) 
-				item.setImage(parentItem.getImage());
 			
-			return dd;
+			// If there's no image, use the parent item image
+			for (com.soundbrowser.persistence.model.Item item : fetchedItens) 
+			{
+				item.setParent(parentItem);
+				if(item.getImage() == null)
+					item.setImage(parentItem.getImage());
+			}
+			
+			return fetchedItens;
 //			return daoItem.query(
 //				daoItem.queryBuilder().
 //					orderBy("title", true).
@@ -234,7 +242,7 @@ public class PodcastService {
         	com.soundbrowser.client.model.Item.class
         );
 		com.soundbrowser.persistence.model.Item subItemRoot = 
-				ItemConverter.convertFromClientItem2ModelItem(item);
+			ItemConverter.convertFromClientItem2ModelItem(item);
 	    List<com.soundbrowser.persistence.model.Item> remoteItemLst = 
 	    	ItemConverter.convertFromClientItens2ModelItens(item.getItens());
 

@@ -54,16 +54,16 @@
 	        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginRight="10dp"
-        />
+        /-->
 	    <com.android.volley.toolbox.NetworkImageView
-	        android:id="@+id/imageThumbnail"
-	        style="@style/MyListImage"/-->
-	    <com.soundbrowser.controller.UserAvatar
+	        android:id="@+id/imageThumbnail2"
+	        style="@style/MyListImage"/>
+	    <!--  com.soundbrowser.controller.UserAvatar
 	        android:id="@+id/imageThumbnail2"
 	        android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginRight="10dp"
-        />
+        /-->
         <!--  app:border_width="2dp"            
         app:border_color="#ffffff" --> 
 

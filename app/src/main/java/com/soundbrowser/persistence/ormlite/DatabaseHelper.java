@@ -13,7 +13,6 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.soundbrowser.R;
 import com.soundbrowser.persistence.model.Item;
 import com.soundbrowser.persistence.model.Timming;
 import com.soundbrowser.persistence.model.Track;
@@ -27,7 +26,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	// name of the database file for your application -- change to something appropriate for your app
 	private static final String DATABASE_NAME = "soundbrowser.db";
 	// any time you make changes to your database objects, you may have to increase the database version
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	// the DAO object we use to access the SimpleData table
 	//private Dao<SimpleData, Integer> simpleDao = null;
@@ -84,17 +83,17 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	 * the various data to match the new version number.
 	 */
 	@Override
-	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-//		try {
-			Log.i(DatabaseHelper.class.getName(), "onUpgrade");
-			//TableUtils.dropTable(connectionSource, SimpleData.class, true);
-			// after we drop the old databases, we create the new ones
-			onCreate(db, connectionSource);
-/*		} catch (SQLException e) {
-			Log.e(DatabaseHelper.class.getName(), "Can't drop databases", e);
-			throw new RuntimeException(e);
+	public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) 
+	{
+		Log.i(DatabaseHelper.class.getName(), "onUpgrade");
+		if (oldVersion == 1) {
+			try {
+				getItemDao().executeRaw("ALTER TABLE item ADD COLUMN visto BOOLEAN default 0;");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		*/
 	}
 
 	/**

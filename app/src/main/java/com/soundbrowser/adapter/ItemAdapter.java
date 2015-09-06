@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.soundbrowser.R;
 import com.soundbrowser.controller.AppController;
 import com.soundbrowser.controller.UserAvatar;
@@ -51,8 +53,8 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 			holder.button1  = (Button)    row.findViewById(R.id.swipe_button1);
 			holder.button2  = (Button)    row.findViewById(R.id.swipe_button2);
 			holder.button3  = (Button)    row.findViewById(R.id.swipe_button3);
-			holder.icon     = (UserAvatar) row.findViewById(R.id.imageThumbnail2);
-//			holder.icon     = (CircledNetworkImageView) row.findViewById(R.id.imageThumbnail2);
+//			holder.icon     = (UserAvatar) row.findViewById(R.id.imageThumbnail2);
+			holder.icon     = (NetworkImageView) row.findViewById(R.id.imageThumbnail2);
 			row.setTag(holder);
 		} else 
 			holder = (NewsHolder) row.getTag();
@@ -63,11 +65,19 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
-        // TODO optimize this in case all the images are the same for this list
-       	holder.icon.setImageUrl(itemdata.getImage(), imageLoader);
-//        holder.icon.setImageUrl(Uri.fromFile(new File(itemdata.getImage())).toString(), new MyCache());
-//		holder.icon.setImageDrawable(itemdata.getIcon());
         
+       	if(itemdata.getVisto() != null && itemdata.getVisto()) {
+            Log.i("soundbrowser", "" + itemdata.getVisto());
+//       		holder.icon.setImageResource(R.drawable.ic_launcher);
+    		holder.itemName.setText("V - " + holder.itemName.getText());
+       	}
+       	
+       	// TODO optimize this in case all the images are the same for this list
+       	holder.icon.setImageUrl(itemdata.getImage(), imageLoader);
+//            holder.icon.setImageUrl(Uri.fromFile(new File(itemdata.getImage())).toString(), new MyCache());
+//    		holder.icon.setImageDrawable(itemdata.getIcon());
+       	
+       	
 		return row;
 	}
 	
@@ -97,7 +107,8 @@ public class ItemAdapter extends ArrayAdapter<Item> {
 
     static class NewsHolder {
 		TextView itemName;
-		UserAvatar icon;  //ImageView  NetworkImageView		RoundedCornerNetworkImageView
+//		UserAvatar icon;  //ImageView  NetworkImageView		RoundedCornerNetworkImageView
+		NetworkImageView icon; 
 		Button button1;
 		Button button2;
 		Button button3;
